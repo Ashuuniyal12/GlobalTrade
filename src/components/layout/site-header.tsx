@@ -1,0 +1,313 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { siteConfig } from "@/config/site";
+import { navigationConfig } from "@/config/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Globe,
+  Ship,
+  FileCheck,
+  Package,
+  Pill,
+  Sparkles,
+  Layers,
+  ArrowRight,
+  MessageCircle,
+} from "lucide-react";
+import { formatWhatsAppUrl } from "@/lib/utils";
+
+export function SiteHeader() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setActiveDropdown(null);
+  }, [pathname]);
+
+  const whatsappUrl = formatWhatsAppUrl(
+    siteConfig.contact.whatsappNumber,
+    siteConfig.contact.whatsappPrefill
+  );
+
+  return (
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 py-3"
+          : "bg-white border-b border-slate-200/60 py-4"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg p-1"
+          >
+            <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-white shadow-md shadow-primary-500/25 group-hover:bg-primary-600 transition-colors">
+              <Globe className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="text-lg font-bold tracking-tight text-navy-950 block leading-tight">
+                APEX <span className="text-primary-500 font-semibold">GLOBAL</span>
+              </span>
+              <span className="text-[10px] tracking-wider uppercase text-slate-500 font-medium block">
+                Trade & Logistics Coordination
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav
+            aria-label="Main Navigation"
+            className="hidden lg:flex items-center gap-1 xl:gap-2"
+          >
+            {navigationConfig.mainNav.map((item) => {
+              const hasChildren = item.children && item.children.length > 0;
+              const isActive =
+                pathname === item.href ||
+                (item.children &&
+                  item.children.some((child) => pathname === child.href));
+
+              if (hasChildren) {
+                const isOpen = activeDropdown === item.title;
+                return (
+                  <div
+                    key={item.title}
+                    className="relative"
+                    onMouseEnter={() => setActiveDropdown(item.title)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-haspopup="true"
+                      className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-800 ${
+                        isActive
+                          ? "text-teal-600 bg-teal-50/60"
+                          : "text-navy-800 hover:text-navy-950 hover:bg-slate-50"
+                      }`}
+                      onClick={() =>
+                        setActiveDropdown(isOpen ? null : item.title)
+                      }
+                    >
+                      <span>{item.title}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          isOpen ? "rotate-180 text-teal-600" : "text-slate-400"
+                        }`}
+                      />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isOpen && (
+                      <div
+                        className="absolute left-0 mt-1 w-80 xl:w-96 rounded-xl bg-white shadow-xl border border-slate-200/80 p-3 animate-in fade-in zoom-in-95 duration-150 z-50"
+                        role="menu"
+                      >
+                        <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 px-3 py-1.5 border-b border-slate-100 mb-2">
+                          {item.title} Overview
+                        </div>
+                        <div className="space-y-1">
+                          {item.children?.map((sub) => (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              role="menuitem"
+                              className="group flex items-start gap-3 p-2.5 rounded-lg hover:bg-slate-50 transition-colors"
+                            >
+                              <div className="mt-0.5 p-1.5 rounded-md bg-slate-100 text-navy-800 group-hover:bg-teal-50 group-hover:text-teal-700 transition-colors">
+                                {sub.href.includes("pharmaceutical") ? (
+                                  <Pill className="w-4 h-4" />
+                                ) : sub.href.includes("api") ? (
+                                  <Sparkles className="w-4 h-4" />
+                                ) : sub.href.includes("customs") ? (
+                                  <FileCheck className="w-4 h-4" />
+                                ) : sub.href.includes("freight") ? (
+                                  <Ship className="w-4 h-4" />
+                                ) : sub.href.includes("trade") ? (
+                                  <Globe className="w-4 h-4" />
+                                ) : (
+                                  <Layers className="w-4 h-4" />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-semibold text-navy-900 group-hover:text-teal-700 transition-colors">
+                                    {sub.title}
+                                  </span>
+                                  {sub.badge && (
+                                    <span className="text-[10px] uppercase font-bold tracking-wide px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 border border-teal-200/60">
+                                      {sub.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                                  {sub.description}
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-slate-100 px-2 flex justify-between items-center text-xs">
+                          <Link
+                            href={item.href}
+                            className="text-teal-700 hover:text-teal-800 font-semibold flex items-center gap-1"
+                          >
+                            Explore all {item.title.toLowerCase()}{" "}
+                            <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className={`px-3.5 py-2 text-sm font-semibold rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+                    isActive
+                      ? "text-primary-600 bg-primary-50"
+                      : "text-navy-800 hover:text-navy-950 hover:bg-slate-50"
+                  }`}
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right Action buttons */}
+          <div className="hidden sm:flex items-center gap-3">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 rounded-lg border border-emerald-200/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+              aria-label="Direct WhatsApp Enquiry"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
+              <span>WhatsApp Desk</span>
+            </a>
+
+            <Link href="/contact#enquiry">
+              <Button size="sm" variant="primary" className="font-bold rounded-full px-5 shadow-sm shadow-primary-500/25">
+                Request a Quote
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile hamburger button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat via WhatsApp"
+              className="p-2 text-emerald-700 hover:bg-emerald-50 rounded-lg sm:hidden"
+            >
+              <MessageCircle className="w-5 h-5" />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-navy-800 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-800"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden border-t border-slate-200 bg-white shadow-xl animate-in slide-in-from-top-2 duration-200 px-4 pt-3 pb-6 max-h-[85vh] overflow-y-auto">
+          <div className="space-y-2">
+            {navigationConfig.mainNav.map((item) => {
+              if (item.children) {
+                return (
+                  <div key={item.title} className="py-2 border-b border-slate-100">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block px-2 mb-2">
+                      {item.title}
+                    </span>
+                    <div className="space-y-1">
+                      {item.children.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className="flex items-center justify-between px-3 py-2 text-sm font-medium text-navy-900 rounded-md hover:bg-slate-50"
+                        >
+                          <span>{sub.title}</span>
+                          {sub.badge && (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-teal-50 text-teal-700">
+                              {sub.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className="block px-3 py-2.5 text-base font-semibold text-navy-900 rounded-md hover:bg-slate-50 border-b border-slate-100 last:border-b-0"
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-slate-200 space-y-3">
+            <Link href="/contact#enquiry" className="block w-full">
+              <Button size="md" variant="primary" className="w-full justify-center">
+                Request a Shipment Quote
+              </Button>
+            </Link>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold text-emerald-800 bg-emerald-50 rounded-lg border border-emerald-200 text-center"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
+              Chat on WhatsApp ({siteConfig.contact.phoneDisplay})
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

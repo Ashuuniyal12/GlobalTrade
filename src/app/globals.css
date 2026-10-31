@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary Brand: Logistics Orange (#FF6913) & Full Scale */
+  --color-primary-50: #FFF5EE;
+  --color-primary-100: #FFE8D6;
+  --color-primary-200: #FFCEAC;
+  --color-primary-300: #FFAF7B;
+  --color-primary-400: #FF8A44;
+  --color-primary-500: #FF6913;
+  --color-primary-600: #EB5400;
+  --color-primary-700: #C43F00;
+  --color-primary-800: #9C3200;
+  --color-primary-900: #7A2800;
+  --color-primary-950: #421200;
+  --color-primary: #FF6913;
+
+  /* Neutral Dark Charcoal (replacing old blue-navy palette) */
+  --color-navy-950: #080C11;
+  --color-navy-900: #0E141D;
+  --color-navy-800: #151D29;
+  --color-navy-700: #212C3C;
+  --color-navy-600: #344256;
+  --color-navy-500: #4E5F77;
+  --color-navy-400: #6F819C;
+  --color-navy-300: #9AA8BF;
+  --color-navy-200: #CCD4E2;
+  --color-navy-100: #E5EAF0;
+  --color-navy-50: #F4F6F9;
+
+  --color-teal-900: #082933;
+  --color-teal-800: #0B4354;
+  --color-teal-700: #11576F;
+  --color-teal-600: #176B87;
+  --color-teal-500: #2083A2;
+  --color-teal-400: #2B829F;
+  --color-teal-300: #4AA4C2;
+  --color-teal-100: #E0F2FE;
+  --color-teal-50: #F0F9FF;
+
+  --color-gold-800: #7A571E;
+  --color-gold-700: #9E7430;
+  --color-gold-600: #B88B43;
+  --color-gold-500: #D6A85F;
+  --color-gold-400: #E6BC79;
+  --color-gold-200: #F4E2BD;
+  --color-gold-100: #FBF4E7;
+  --color-gold-50: #FDF9F2;
+
+  --color-surface-bg: #F7F5F0;
+  --color-surface-card: #FFFFFF;
+  --color-surface-border: #E5E8EC;
+}
+
+:root {
+  --background: #F7F5F0;
+  --foreground: #080C11;
+  --primary: #FF6913;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #F4F7FA;
+  color: #102A43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F0F4F8;
+}
+::-webkit-scrollbar-thumb {
+  background: #BCCCDC;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #627D98;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-panel-dark {
+  background: rgba(16, 42, 67, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Slide-in animation for FAQ content */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.slide-in-from-top-1 {
+  animation-name: slideInFromTop;
+}
+
+.duration-200 {
+  animation-duration: 200ms;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

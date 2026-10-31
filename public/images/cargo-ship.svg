@@ -1,0 +1,132 @@
+<svg width="600" height="300" viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hullGrad" x1="100" y1="180" x2="520" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F2847"/>
+      <stop offset="35%" stop-color="#163860"/>
+      <stop offset="70%" stop-color="#1A426F"/>
+      <stop offset="100%" stop-color="#0E233C"/>
+    </linearGradient>
+
+    <linearGradient id="keelGrad" x1="100" y1="210" x2="520" y2="210" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9B1C1C"/>
+      <stop offset="50%" stop-color="#C53030"/>
+      <stop offset="100%" stop-color="#821919"/>
+    </linearGradient>
+
+    <linearGradient id="deckGrad" x1="120" y1="140" x2="500" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+
+    <linearGradient id="bridgeGrad" x1="420" y1="90" x2="500" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+
+    <filter id="shipShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="-8" dy="16" stdDeviation="12" flood-color="#06121f" flood-opacity="0.25"/>
+    </filter>
+
+    <linearGradient id="waterWake" x1="100" y1="230" x2="560" y2="230" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#BAE6FD" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g opacity="0.85">
+    <path d="M 60 220 Q 95 210 120 226 Q 80 235 50 225 Z" fill="#E0F2FE" opacity="0.9"/>
+    <path d="M 45 224 Q 75 220 95 232 Q 65 238 35 228 Z" fill="#BAE6FD" opacity="0.7"/>
+    <path d="M 110 228 C 200 232, 340 231, 540 226 C 450 236, 250 237, 110 228 Z" fill="url(#waterWake)"/>
+    <path d="M 490 225 Q 540 223 585 228 Q 535 232 485 227 Z" fill="#E0F2FE" opacity="0.75"/>
+    <path d="M 510 227 Q 555 226 595 234 Q 550 238 500 230 Z" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <g filter="url(#shipShadow)">
+    <path d="M 75 214 C 85 224, 100 227, 130 227 L 490 227 C 515 227, 525 220, 520 214 L 495 214 L 105 214 Z" fill="url(#keelGrad)"/>
+    <rect x="95" y="213" width="410" height="2" fill="#FFFFFF" opacity="0.9"/>
+
+    <path d="M 68 152 C 76 182, 88 206, 105 214 L 505 214 C 525 210, 532 195, 528 170 L 522 152 Z" fill="url(#hullGrad)"/>
+
+    <ellipse cx="98" cy="172" rx="4.5" ry="3.5" fill="#0A192F"/>
+    <path d="M 98 172 L 98 184 M 94 182 C 96 186, 100 186, 102 182" stroke="#64748B" stroke-width="1.8" stroke-linecap="round"/>
+
+    <polygon points="68,152 522,152 516,147 85,147" fill="url(#deckGrad)"/>
+    <path d="M 68 152 L 85 147 L 95 147 L 78 152 Z" fill="#94A3B8"/>
+    <line x1="85" y1="145" x2="130" y2="145" stroke="#CBD5E1" stroke-width="1.2"/>
+
+    <!-- Bay 1 -->
+    <rect x="135" y="133" width="46" height="13" rx="1" fill="#0284C7" stroke="#0369A1" stroke-width="0.8"/>
+    <line x1="146" y1="133" x2="146" y2="146" stroke="#0369A1" stroke-width="0.8"/>
+    <line x1="158" y1="133" x2="158" y2="146" stroke="#0369A1" stroke-width="0.8"/>
+    <line x1="169" y1="133" x2="169" y2="146" stroke="#0369A1" stroke-width="0.8"/>
+    <rect x="135" y="119" width="46" height="13" rx="1" fill="#EA580C" stroke="#C2410C" stroke-width="0.8"/>
+    <line x1="146" y1="119" x2="146" y2="132" stroke="#C2410C" stroke-width="0.8"/>
+    <line x1="158" y1="119" x2="158" y2="132" stroke="#C2410C" stroke-width="0.8"/>
+    <line x1="169" y1="119" x2="169" y2="132" stroke="#C2410C" stroke-width="0.8"/>
+    <rect x="135" y="105" width="46" height="13" rx="1" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+
+    <!-- Bay 2 -->
+    <rect x="185" y="133" width="48" height="13" rx="1" fill="#0D9488" stroke="#0F766E" stroke-width="0.8"/>
+    <rect x="185" y="119" width="48" height="13" rx="1" fill="#1E3A8A" stroke="#172554" stroke-width="0.8"/>
+    <rect x="185" y="105" width="48" height="13" rx="1" fill="#DC2626" stroke="#B91C1C" stroke-width="0.8"/>
+    <rect x="185" y="91" width="48" height="13" rx="1" fill="#F8FAFC" stroke="#94A3B8" stroke-width="0.8"/>
+
+    <!-- Bay 3 -->
+    <rect x="237" y="133" width="48" height="13" rx="1" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+    <rect x="237" y="119" width="48" height="13" rx="1" fill="#0284C7" stroke="#0369A1" stroke-width="0.8"/>
+    <rect x="237" y="105" width="48" height="13" rx="1" fill="#0D9488" stroke="#0F766E" stroke-width="0.8"/>
+    <rect x="237" y="91" width="48" height="13" rx="1" fill="#EA580C" stroke="#C2410C" stroke-width="0.8"/>
+
+    <!-- Bay 4 -->
+    <rect x="289" y="133" width="48" height="13" rx="1" fill="#1E3A8A" stroke="#172554" stroke-width="0.8"/>
+    <rect x="289" y="119" width="48" height="13" rx="1" fill="#F8FAFC" stroke="#94A3B8" stroke-width="0.8"/>
+    <rect x="289" y="105" width="48" height="13" rx="1" fill="#DC2626" stroke="#B91C1C" stroke-width="0.8"/>
+    <rect x="289" y="91" width="48" height="13" rx="1" fill="#0284C7" stroke="#0369A1" stroke-width="0.8"/>
+
+    <!-- Bay 5 -->
+    <rect x="341" y="133" width="48" height="13" rx="1" fill="#0D9488" stroke="#0F766E" stroke-width="0.8"/>
+    <rect x="341" y="119" width="48" height="13" rx="1" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+    <rect x="341" y="105" width="48" height="13" rx="1" fill="#1E3A8A" stroke="#172554" stroke-width="0.8"/>
+    <rect x="341" y="91" width="48" height="13" rx="1" fill="#F8FAFC" stroke="#94A3B8" stroke-width="0.8"/>
+
+    <!-- Bay 6 -->
+    <rect x="393" y="133" width="44" height="13" rx="1" fill="#EA580C" stroke="#C2410C" stroke-width="0.8"/>
+    <rect x="393" y="119" width="44" height="13" rx="1" fill="#0284C7" stroke="#0369A1" stroke-width="0.8"/>
+    <rect x="393" y="105" width="44" height="13" rx="1" fill="#DC2626" stroke="#B91C1C" stroke-width="0.8"/>
+
+    <!-- Deckhouse -->
+    <rect x="444" y="102" width="60" height="46" rx="2" fill="url(#bridgeGrad)"/>
+    <rect x="448" y="114" width="8" height="4" rx="0.5" fill="#0F172A"/>
+    <rect x="460" y="114" width="8" height="4" rx="0.5" fill="#0F172A"/>
+    <rect x="472" y="114" width="8" height="4" rx="0.5" fill="#0F172A"/>
+    <rect x="484" y="114" width="8" height="4" rx="0.5" fill="#0F172A"/>
+
+    <!-- Navigational Bridge -->
+    <path d="M 440 86 L 508 86 L 504 102 L 444 102 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+    <rect x="442" y="89" width="62" height="7" rx="1" fill="#0F172A"/>
+    <rect x="444" y="90" width="10" height="5" fill="#38BDF8" opacity="0.8"/>
+    <rect x="456" y="90" width="10" height="5" fill="#38BDF8" opacity="0.8"/>
+    <rect x="468" y="90" width="10" height="5" fill="#38BDF8" opacity="0.8"/>
+    <rect x="480" y="90" width="10" height="5" fill="#38BDF8" opacity="0.8"/>
+    <rect x="492" y="90" width="10" height="5" fill="#38BDF8" opacity="0.8"/>
+
+    <rect x="495" y="118" width="16" height="7" rx="3.5" fill="#F97316"/>
+
+    <path d="M 488 64 L 502 64 L 498 86 L 486 86 Z" fill="#1E3A8A"/>
+    <rect x="487.5" y="64" width="14" height="5" fill="#DC2626"/>
+    <rect x="488" y="73" width="12" height="4" fill="#FBBF24"/>
+    <ellipse cx="496" cy="56" rx="5" ry="3" fill="#94A3B8" opacity="0.3"/>
+    <ellipse cx="503" cy="50" rx="7" ry="4" fill="#CBD5E1" opacity="0.2"/>
+
+    <line x1="462" y1="62" x2="462" y2="86" stroke="#94A3B8" stroke-width="1.8"/>
+    <line x1="454" y1="72" x2="470" y2="72" stroke="#94A3B8" stroke-width="1.2"/>
+    <line x1="457" y1="66" x2="467" y2="66" stroke="#94A3B8" stroke-width="1.2"/>
+    <ellipse cx="462" cy="62" rx="4" ry="2" fill="#E2E8F0"/>
+    <line x1="112" y1="126" x2="112" y2="147" stroke="#94A3B8" stroke-width="1.6"/>
+    <line x1="107" y1="133" x2="117" y2="133" stroke="#94A3B8" stroke-width="1"/>
+
+    <text x="110" y="176" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="900" fill="#93C5FD" letter-spacing="1.5">GLOBAL VOYAGER</text>
+  </g>
+</svg>
