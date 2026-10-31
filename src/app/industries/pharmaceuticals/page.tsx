@@ -90,7 +90,7 @@ export default function PharmaceuticalsPage() {
                 Pharmaceutical trade involves stringent regulatory scrutiny at both origin and destination borders. Minor errors in consignment batch numbers, discrepancy in international nonproprietary names (INN), or temperature data logger failures can result in total shipment rejection by destination health authorities.
               </p>
               <p className="mt-3">
-                Apex Global Trade acts as an independent trade and logistics coordinator. We work in tandem with certified drug manufacturers and licensed pharmaceutical distributors, verifying that packaging, transit routes, and commercial documentation strictly adhere to Good Distribution Practice (GDP) standards.
+                Euronext Global acts as an independent trade and logistics coordinator. We work in tandem with certified drug manufacturers and licensed pharmaceutical distributors, verifying that packaging, air/sea transit routes, and commercial documentation strictly adhere to Good Distribution Practice (GDP) standards.
               </p>
             </div>
 
@@ -123,7 +123,7 @@ export default function PharmaceuticalsPage() {
                 <span>Statutory Compliance & Licensing Requirement</span>
               </h3>
               <p className="text-xs leading-relaxed text-amber-900">
-                Apex Global Trade coordinates commercial trade documentation and freight transit. We do not manufacture drugs, issue national market authorizations, or guarantee sovereign customs clearance. Importers and exporters must hold valid drug manufacturing/distribution licenses from their respective sovereign drug authorities (such as US FDA, EMA, SFDA, CDSCO) prior to shipment initiation.
+                Euronext Global coordinates commercial trade documentation and air/ocean freight transit. We do not manufacture drugs, issue national market authorizations, or guarantee sovereign customs clearance. Importers and exporters must hold valid drug manufacturing/distribution licenses from their respective sovereign drug authorities (such as US FDA, EMA, TITCK, SFDA) prior to shipment initiation.
               </p>
             </div>
           </div>

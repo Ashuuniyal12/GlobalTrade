@@ -83,7 +83,7 @@ export default function InternationalTradePage() {
                 International commerce involves multiple jurisdictions, currency variables, disparate legal frameworks, and logistical handoffs. A minor ambiguity in an Incoterms clause or a mismatch in commercial invoice descriptions can lead to container hold-ups, disputed demurrage, or rejected bank letters of credit.
               </p>
               <p className="mt-3">
-                Apex Global Trade acts as your operational trade coordination desk. We ensure every aspect of your commercial trade agreement is technically sound, executable, and fully aligned with the requirements of port authorities and carriers.
+                Euronext Global acts as your operational trade coordination desk in Istanbul. We ensure every aspect of your commercial trade agreement is technically sound, executable, and fully aligned with the requirements of airport/port customs authorities and international carriers.
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function InternationalTradePage() {
                 <span>Statutory Scope Clarification</span>
               </h3>
               <p className="text-xs text-teal-900 leading-relaxed">
-                Apex Global Trade facilitates commercial transactions, documentation packages, and logistics routing. We do not act as the principal seller or manufacturer unless explicitly contracted under a specific trading mandate. All goods remain subject to sovereign trade sanctions, export controls, and import licensing laws.
+                Euronext Global facilitates commercial transactions, documentation packages, and air/sea logistics routing. We do not act as the principal seller or manufacturer unless explicitly contracted under a specific trading mandate. All goods remain subject to sovereign trade sanctions, export controls, and import licensing laws.
               </p>
             </div>
           </div>

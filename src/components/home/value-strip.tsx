@@ -17,21 +17,21 @@ const strengths = [
   {
     icon: FileCheck,
     number: "01",
-    code: "DOC-AUDIT // HS-2026",
+    code: "AIRPORT & PORT CUSTOMS // HS-2026",
     metric: "99.8% First-Pass Filing",
-    title: "Customs & Documentation Clarity",
-    desc: "Proactive review of HS classifications, commercial invoices, and origin certificates before cargo dispatch.",
-    tags: ["HS Code Verification", "EUR1 / COO", "LC Alignment"],
+    title: "Airport & Seaport Customs Clarity",
+    desc: "Rapid pre-clearance review of Air Waybills (AWB), Bills of Lading (BL), HS classifications, A.TR / EUR.1, and origin certificates.",
+    tags: ["Airport Express Customs", "A.TR / EUR.1 / COO", "HS Code Audit"],
     accent: "from-primary-500 to-primary-700",
   },
   {
     icon: Globe2,
     number: "02",
-    code: "ROUTE-OPT // FCL-AIR",
-    metric: "42+ Direct Port Pairs",
-    title: "Multi-Corridor Trade Routing",
-    desc: "Coordinating sea freight and air transit across active hubs in the Middle East, Europe, Asia, and the Americas.",
-    tags: ["FCL & LCL Ocean", "Air Charter", "Transshipment Guard"],
+    code: "AIR & OCEAN // ISTANBUL HUB",
+    metric: "42+ Air & Sea Hubs",
+    title: "Air Freight & Ocean Container Routing",
+    desc: "Coordinating priority IATA air cargo, ULD aircraft pallets, and FCL/LCL sea freight across Istanbul, Europe, the Middle East, Asia, and the Americas.",
+    tags: ["IATA Air Freight", "FCL & LCL Ocean", "Air-Sea Intermodal"],
     accent: "from-teal-500 to-teal-700",
   },
   {
@@ -39,19 +39,19 @@ const strengths = [
     number: "03",
     code: "REG-GDP // API-COA",
     metric: "+2°C to +8°C Validated",
-    title: "Regulated Cargo Compliance",
-    desc: "Clear segregation of pharmaceutical, API, chemical, and general goods documentation to avoid port holdups.",
-    tags: ["COA & MSDS Vetting", "Reefer Telemetry", "Hazmat DG Packing"],
+    title: "Regulated Pharma & Air Cold-Chain",
+    desc: "Segregated handling for pharmaceutical, API, and chemical cargo via Envirotainer air thermal units and active ocean reefers.",
+    tags: ["Air & Sea Cold-Chain", "COA & MSDS Vetting", "Hazmat DG Packing"],
     accent: "from-gold-500 to-gold-700",
   },
   {
     icon: GitFork,
     number: "04",
-    code: "OPS-SYNC // SINGLE-DESK",
+    code: "OPS-SYNC // ISTANBUL DESK",
     metric: "< 15 Min Desk Response",
     title: "Direct Operations Coordination",
-    desc: "Single-point commercial communications connecting suppliers, consignees, freight carriers, and clearance agents.",
-    tags: ["Supplier Milestones", "BL Release", "Customs Broker Sync"],
+    desc: "Single-point commercial communications from our Istanbul desk connecting suppliers, airlines, ocean carriers, and airport/port customs brokers.",
+    tags: ["AWB & BL Release", "Airport Broker Sync", "Supplier Milestones"],
     accent: "from-emerald-500 to-teal-700",
   },
 ];
@@ -86,13 +86,13 @@ export function ValueStrip() {
             >
               Engineered for{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-700">
-                Zero Port Friction.
+                Zero Customs Friction.
               </span>
             </h2>
 
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
-              Hover or select any operational pillar to inspect how our trade desk validates
-              containers before vessel loading.
+              Hover or select any operational pillar to inspect how our Istanbul trade desk validates
+              air cargo and ocean containers before departure.
             </p>
 
             {/* Live 3D Container Diagnostic Preview Box */}
@@ -129,7 +129,7 @@ export function ValueStrip() {
                     <div className="relative z-10 h-full flex flex-col justify-between">
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-[10px] font-black bg-black/40 px-2 py-0.5 rounded text-white">
-                          APXU-0{activeItem.number}942-0
+                          ENXU-0{activeItem.number}942-0
                         </span>
                         <ActiveIcon className="w-5 h-5 text-white" />
                       </div>

@@ -92,7 +92,7 @@ export default function ApiTradePage() {
                 Active Pharmaceutical Ingredients (APIs) represent the chemical core of finished medicines. Transporting bulk powders, crystals, and liquid intermediates demands rigorous technical verification—from determining correct UN classification codes to coordinating moisture-controlled containerization.
               </p>
               <p className="mt-3">
-                Apex Global Trade assists chemical manufacturers and pharmaceutical formulators in managing cross-border trade transactions. We bridge chemical documentation compliance with international freight carriers to ensure smooth transit across Asia, the Middle East, Europe, and the Americas.
+                Euronext Global assists chemical manufacturers and pharmaceutical formulators in managing cross-border trade transactions. We bridge chemical documentation compliance with international air cargo and ocean freight carriers to ensure smooth transit across Europe, the Middle East, Asia, and the Americas.
               </p>
             </div>
 
@@ -124,7 +124,7 @@ export default function ApiTradePage() {
                 <span>Chemical Regulatory Notice</span>
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Apex Global Trade provides trade coordination, commercial documentation vetting, and logistics arrangements. We do not manufacture active substances or hold proprietary marketing authorisations. Importers and buyers are responsible for ensuring that all API purchases adhere to their destination jurisdiction&apos;s REACH, drug master file, or national statutory licensing requirements.
+                Euronext Global provides trade coordination, commercial documentation vetting, and logistics arrangements. We do not manufacture active substances or hold proprietary marketing authorisations. Importers and buyers are responsible for ensuring that all API purchases adhere to their destination jurisdiction&apos;s REACH, drug master file, or national statutory licensing requirements.
               </p>
             </div>
           </div>

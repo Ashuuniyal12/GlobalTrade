@@ -87,7 +87,7 @@ export default function TextilesPage() {
                 The global textile and apparel industry is driven by rapid fashion seasons, strict delivery windows, and delicate margin structures. Delays at departure ports or clerical discrepancies in commercial invoices can disrupt entire retail inventory pipelines.
               </p>
               <p className="mt-3">
-                Apex Global Trade works directly with spinning units, weaving mills, and apparel buying houses. We coordinate pre-shipment quality certifications, container space reservations, and destination customs paperwork to ensure your fabric and garment consignments move on time.
+                Euronext Global works directly with spinning units, weaving mills, and apparel buying houses across Türkiye, Europe, and Asia. We coordinate pre-shipment quality certifications, air freight garments-on-hangers (GOH), container space reservations, and A.TR / EUR.1 customs paperwork to ensure your fabric and garment consignments move on time.
               </p>
             </div>
 

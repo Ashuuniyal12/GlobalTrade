@@ -8,6 +8,7 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { navigationConfig } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import {
   Menu,
   X,
@@ -74,22 +75,13 @@ export function SiteHeader() {
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Brand Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg p-1"
+            aria-label="Euronext Global Home"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-xl p-1"
           >
-            <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-white shadow-md shadow-primary-500/25 group-hover:bg-primary-600 transition-colors">
-              <Globe className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <span className="text-lg font-bold tracking-tight text-navy-950 block leading-tight">
-                APEX <span className="text-primary-500 font-semibold">GLOBAL</span>
-              </span>
-              <span className="text-[10px] tracking-wider uppercase text-slate-500 font-medium block">
-                Trade & Logistics Coordination
-              </span>
-            </div>
+            <BrandLogo theme="light" size="md" />
           </Link>
 
           {/* Desktop Navigation */}

@@ -122,7 +122,7 @@
       <rect x="192" y="110" width="52" height="13" rx="1" fill="#0284C7"/>
       <rect x="192" y="96" width="52" height="13" rx="1" fill="#EA580C"/>
       <rect x="192" y="96" width="52" height="69" fill="url(#corrugation)"/>
-      <text x="200" y="105" fill="#FFFFFF" font-family="monospace" font-size="6.5" font-weight="900">APXU</text>
+      <text x="200" y="105" fill="#FFFFFF" font-family="monospace" font-size="6.5" font-weight="900">ENXU</text>
       <text x="200" y="133" fill="#0F172A" font-family="monospace" font-size="6" font-weight="900">REEFER</text>
     </g>
 
@@ -139,7 +139,7 @@
       <rect x="250" y="82" width="52" height="13" rx="1" fill="#F8FAFC"/>
       <rect x="250" y="82" width="52" height="83" fill="url(#corrugation)"/>
       <text x="258" y="91" fill="#0F172A" font-family="monospace" font-size="6.5" font-weight="900">PHARMA</text>
-      <text x="258" y="119" fill="#FFFFFF" font-family="monospace" font-size="6.5" font-weight="900">APEX</text>
+      <text x="254" y="119" fill="#FFFFFF" font-family="monospace" font-size="6" font-weight="900">EURONEXT</text>
     </g>
 
     <!-- Lashing Bridge 3 -->
@@ -169,7 +169,7 @@
       <rect x="366" y="96" width="52" height="13" rx="1" fill="#DC2626"/>
       <rect x="366" y="82" width="52" height="13" rx="1" fill="#EA580C"/>
       <rect x="366" y="82" width="52" height="83" fill="url(#corrugation)"/>
-      <text x="374" y="91" fill="#FFFFFF" font-family="monospace" font-size="6.5" font-weight="900">APEX 40</text>
+      <text x="372" y="91" fill="#FFFFFF" font-family="monospace" font-size="6" font-weight="900">ENXU 40</text>
     </g>
 
     <!-- Lashing Bridge 5 -->
@@ -310,11 +310,11 @@
     <line x1="341" y1="222" x2="355" y2="222" stroke="#F8FAFC" stroke-width="1.2" opacity="0.75"/>
 
     <!-- Hull Vessel Name, Registry & Draft Marks -->
-    <text x="128" y="192" font-family="monospace, system-ui, sans-serif" font-size="12" font-weight="900" fill="#FFFFFF" letter-spacing="3">
-      APEX VOYAGER
+    <text x="128" y="192" font-family="monospace, system-ui, sans-serif" font-size="11.5" font-weight="900" fill="#FFFFFF" letter-spacing="2.5">
+      EURONEXT VOYAGER
     </text>
     <text x="129" y="203" font-family="monospace, system-ui, sans-serif" font-size="7" font-weight="700" fill="#38BDF8" letter-spacing="2">
-      IMO 9948210 · ULTRA LARGE CONTAINER CARRIER
+      IMO 9948210 · ISTANBUL · OCEAN CONTAINER CARRIER
     </text>
 
     <!-- Forward Draft Marks -->

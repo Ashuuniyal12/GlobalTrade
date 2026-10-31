@@ -5,24 +5,24 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "What types of cargo and commodities does Apex Global Trade handle?",
-    a: "We coordinate shipments across multiple industries, including general commercial cargo, textiles & yarns, raw materials & specialty minerals, and regulated pharmaceutical finished goods and active pharmaceutical ingredients (APIs). Each sector is handled with specific documentation protocols.",
+    q: "What types of cargo and commodities does Euronext Global handle?",
+    a: "Operating from our Istanbul headquarters, we coordinate air freight and ocean shipments across multiple industries, including regulated pharmaceutical finished goods, active pharmaceutical ingredients (APIs), textiles & garments, raw materials & specialty minerals, and high-priority commercial cargo.",
+  },
+  {
+    q: "How do you handle urgent Airport Customs Clearance and Air Cargo shipments?",
+    a: "Air cargo requires rapid customs turnaround to avoid airport terminal storage fees. We pre-audit Air Waybills (AWB), HS classifications, A.TR / EUR.1 movement certificates, Certificates of Origin, and health/COA dossiers prior to flight departure so airport customs brokers can clear consignments immediately upon landing.",
   },
   {
     q: "How are temperature-sensitive pharmaceutical and API shipments coordinated?",
-    a: "For pharmaceutical products, we coordinate with certified cold-chain carriers offering validated active reefer containers or pre-qualified passive thermal packaging (+2°C to +8°C or +15°C to +25°C). We review Certificates of Analysis (COA), batch documents, and MSDS before booking transit.",
+    a: "For pharmaceutical products, we coordinate both IATA temperature-controlled air freight (Envirotainer / active ULD thermal units and passive shippers) and validated ocean reefer containers (+2°C to +8°C or +15°C to +25°C). We review Certificates of Analysis (COA), batch documents, and MSDS before booking transit.",
   },
   {
     q: "Do you guarantee customs clearance in every destination country?",
-    a: "No legitimate international trade entity can provide universal clearance guarantees. Customs clearance is the sovereign legal prerogative of port and border authorities in the importing nation. What we do provide is rigorous pre-shipment documentation auditing (HS codes, valuations, origin proofs, and regulatory dossiers) to ensure submissions meet every statutory requirement and eliminate common administrative rejections.",
+    a: "No legitimate international trade entity can provide universal clearance guarantees. Customs clearance is the sovereign legal prerogative of airport and seaport border authorities in the importing nation. What we do provide is rigorous pre-shipment documentation auditing (HS codes, valuations, origin proofs, and regulatory dossiers) to ensure submissions meet every statutory requirement and eliminate common administrative rejections.",
   },
   {
-    q: "What information is needed to receive an accurate shipment coordination quote?",
-    a: "To provide a comprehensive quotation, our trade desk requires: (1) Commodity name and HS Code if known, (2) Cargo dimensions, gross weight, and volume (CBM), (3) Origin port and target destination, (4) Preferred Incoterms rule (e.g. FOB, CIF, DAP), and (5) Any special requirements such as temperature logs or hazardous material classifications.",
-  },
-  {
-    q: "How does Apex Global Trade work with freight forwarders and customs brokers?",
-    a: "We act as your dedicated trade and logistics coordinator. We work alongside vetted international shipping lines, air carriers, and licensed customs clearance agents at destination ports, coordinating the entire flow of documents, payments, and cargo milestones on your behalf.",
+    q: "How does Euronext Global work with airlines, shipping lines, and customs brokers?",
+    a: "We act as your dedicated trade and logistics coordinator. We work alongside international cargo airlines, ocean shipping lines, and licensed customs clearance agents at destination airports and seaports, coordinating the entire flow of documents, payments, and cargo milestones on your behalf.",
   },
 ];
 

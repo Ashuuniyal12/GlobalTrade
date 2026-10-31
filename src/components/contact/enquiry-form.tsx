@@ -125,7 +125,7 @@ export function EnquiryForm() {
 
   const whatsappUrl = formatWhatsAppUrl(
     siteConfig.contact.whatsappNumber,
-    "Hello Apex Global Trade desk, I would like to submit a direct shipment enquiry."
+    "Hello Euronext Global desk, I would like to submit a direct air/sea shipment enquiry."
   );
 
   return (
@@ -320,13 +320,13 @@ export function EnquiryForm() {
                 htmlFor="enquiry-originCountry"
                 className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-1.5"
               >
-                Origin Port / Country
+                Origin Airport / Port / Country
               </label>
               <input
                 id="enquiry-originCountry"
                 name="originCountry"
                 type="text"
-                placeholder="e.g. Mumbai (JNPT), India"
+                placeholder="e.g. Istanbul Airport (IST) / Ambarli, Türkiye"
                 value={formData.originCountry || ""}
                 onChange={handleChange}
                 className="w-full rounded-lg px-3.5 py-2.5 text-sm border border-slate-300 bg-slate-50/50 text-navy-900 transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-800"
@@ -338,13 +338,13 @@ export function EnquiryForm() {
                 htmlFor="enquiry-destinationCountry"
                 className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-1.5"
               >
-                Destination Port / Country
+                Destination Airport / Port / Country
               </label>
               <input
                 id="enquiry-destinationCountry"
                 name="destinationCountry"
                 type="text"
-                placeholder="e.g. Rotterdam, Netherlands / Jebel Ali, UAE"
+                placeholder="e.g. Frankfurt (FRA) / Rotterdam / Dubai (DXB)"
                 value={formData.destinationCountry || ""}
                 onChange={handleChange}
                 className="w-full rounded-lg px-3.5 py-2.5 text-sm border border-slate-300 bg-slate-50/50 text-navy-900 transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-800"
@@ -408,7 +408,7 @@ export function EnquiryForm() {
                 className="mt-1 h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
               />
               <span className="text-xs text-slate-600 leading-normal">
-                I understand that Apex Global Trade coordinates cross-border shipments and trade documentation in accordance with international trade rules. I consent to having my commercial enquiry reviewed by the operations team.
+                I understand that Euronext Global coordinates cross-border air &amp; ocean shipments and customs documentation in accordance with international trade rules. I consent to having my commercial enquiry reviewed by the Istanbul operations team.
               </span>
             </label>
             {errors.consent && (

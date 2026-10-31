@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { navigationConfig } from "@/config/navigation";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import {
-  Globe,
   Mail,
   MapPin,
   Clock,
@@ -43,49 +43,73 @@ export function SiteFooter() {
         <div className="absolute inset-0 bg-gradient-to-b from-navy-950/90 via-navy-950/35 to-navy-950/95" />
       </div>
 
-      {/* ── CTA Top Band ──────────────────────────────────────────────────── */}
-      <div className="relative border-b border-white/8">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-12">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Left: Big tagline */}
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-primary-400">
-                  Ready to Ship Globally?
-                </span>
-                <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono text-primary-300 bg-primary-950/70 border border-primary-500/30 px-2.5 py-0.5 rounded-full">
+      {/* ── Unified High-Impact Trade CTA Section ─────────────────────────── */}
+      <div className="relative border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+            {/* Left: Merged Headline & Operational Copy */}
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap items-center gap-3 mb-5">
+                <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-primary-400 bg-primary-500/10 border border-primary-500/25 px-3.5 py-1.5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse" />
-                  Maritime Corridors Active
+                  Start Your Trade Discussion
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-teal-300 bg-teal-950/70 border border-teal-500/30 px-3 py-1 rounded-full">
+                  Air &amp; Maritime Corridors Active · Istanbul HQ
                 </span>
               </div>
+
               <h2
-                className="font-extrabold text-white tracking-tight leading-tight"
-                style={{ fontSize: "clamp(26px, 4vw, 44px)" }}
+                className="font-extrabold text-white tracking-tight leading-[1.08] mb-4"
+                style={{ fontSize: "clamp(28px, 4.5vw, 52px)" }}
               >
-                Start a Trade{" "}
-                <span className="text-slate-400">Discussion</span>{" "}
-                <span className="text-primary-400">Today.</span>
+                Tell Us About{" "}
+                <span className="text-slate-400">Your Next International</span>{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-500">
+                  Shipment.
+                </span>
               </h2>
+
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                Whether you need airport or seaport customs documentation vetting, temperature-controlled
+                pharma air/sea coordination, or full FCL/LCL container logistics across global corridors — our Istanbul operations desk is ready to assist.
+              </p>
             </div>
 
-            {/* Right: Two CTA buttons */}
-            <div className="flex flex-wrap gap-3 flex-shrink-0">
-              <Link
-                href="/contact#enquiry"
-                className="inline-flex items-center gap-2 bg-primary-500 text-white font-bold text-sm px-6 py-3.5 rounded-full hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/25 whitespace-nowrap group"
-              >
-                Submit Shipment Specs
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 font-semibold text-sm px-6 py-3.5 rounded-full border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors whitespace-nowrap"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp Trade Desk
-              </a>
+            {/* Right: Unified Action Buttons & Trust Guarantee */}
+            <div className="flex flex-col items-start lg:items-end gap-4 flex-shrink-0">
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href="/contact#enquiry"
+                  className="inline-flex items-center gap-2 bg-primary-500 text-white font-bold text-sm px-7 py-3.5 rounded-full hover:bg-primary-600 transition-colors shadow-xl shadow-primary-500/25 whitespace-nowrap group"
+                >
+                  Submit Shipment Specifications
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-emerald-400 text-navy-950 font-bold text-sm px-6 py-3.5 rounded-full hover:bg-emerald-300 transition-colors shadow-lg shadow-emerald-400/20 whitespace-nowrap"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp Trade Desk
+                </a>
+
+                <a
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-6 py-3.5 rounded-full border border-white/15 hover:bg-white/15 transition-colors whitespace-nowrap"
+                >
+                  <Mail className="w-4 h-4" />
+                  Email Operations
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                <ShieldCheck className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                <span>Strict Commercial Privacy Guaranteed · Direct Trade Specialist Review</span>
+              </div>
             </div>
           </div>
         </div>
@@ -97,18 +121,8 @@ export function SiteFooter() {
 
           {/* Brand column */}
           <div className="lg:col-span-2 space-y-5">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-500 border border-primary-400/30 flex items-center justify-center text-white shadow-md shadow-primary-500/25">
-                <Globe className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-base font-extrabold tracking-tight text-white">
-                  APEX <span className="text-primary-400 font-semibold">GLOBAL</span>
-                </span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                  Trade & Logistics Coordination
-                </span>
-              </div>
+            <Link href="/" aria-label="Euronext Global Home" className="inline-block">
+              <BrandLogo theme="dark" size="md" />
             </Link>
 
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
@@ -232,7 +246,7 @@ export function SiteFooter() {
                 Active Corridors
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {["Dubai", "Rotterdam", "Singapore", "Houston", "Mombasa"].map((port) => (
+                {["Istanbul (IST)", "Frankfurt (FRA)", "Dubai (DXB)", "Rotterdam", "Singapore", "Houston"].map((port) => (
                   <span
                     key={port}
                     className="text-[10px] text-primary-400/90 bg-primary-500/10 border border-primary-500/20 px-2 py-0.5 rounded-full"
@@ -250,8 +264,8 @@ export function SiteFooter() {
           <ShieldCheck className="w-4 h-4 text-primary-400 flex-shrink-0 mt-0.5" />
           <p className="text-[11px] text-slate-500 leading-relaxed">
             <strong className="text-slate-400">Statutory Notice & Operational Boundaries: </strong>
-            Apex Global Trade operates as a commercial trade coordination, documentation advisory, and cross-border shipment facilitator.
-            Specific customs declarations, licensed freight transport, and pharmaceutical authorizations are executed strictly in compliance with sovereign port authorities and vetted licensed operators.
+            Euronext Global operates from Istanbul, Türkiye as a commercial trade coordination, airport/port customs documentation advisory, and cross-border shipment facilitator.
+            Specific customs declarations, licensed air/ocean freight transport, and pharmaceutical authorizations are executed strictly in compliance with sovereign port/airport authorities and vetted licensed operators.
             Product importability is subject to destination country regulations and buyer/seller statutory licenses.
           </p>
         </div>

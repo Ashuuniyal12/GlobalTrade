@@ -7,7 +7,7 @@ import { siteConfig } from "@/config/site";
 export const metadata: Metadata = constructMetadata({
   title: "Privacy Policy | Commercial Data Protection & Confidentiality",
   description:
-    "Privacy Policy for Apex Global Trade: how commercial enquiry data, company specifications, and trade documents are protected.",
+    "Privacy Policy for Euronext Global: how commercial enquiry data, company specifications, and trade documents are protected.",
   path: "/privacy-policy",
   noIndex: false,
 });
@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
             Privacy & Commercial Data Protection Policy
           </h1>
           <p className="text-xs text-slate-500 mt-2 font-mono">
-            Last Updated: October 2026 • Apex Global Trade & Logistics
+            Last Updated: October 2026 • Euronext Global Trade &amp; Logistics (Istanbul, Türkiye)
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-navy-950 mb-2">1. Scope & Commitment</h2>
             <p>
-              Apex Global Trade ({`"${siteConfig.name}"`}, {`"we"`}, {`"our"`}) values the confidentiality of commercial traders, manufacturers, importers, and exporters. This Privacy Policy outlines how we collect, process, and protect the business contact and shipment data you submit through our website ({siteConfig.url}), direct email, or messaging channels.
+              Euronext Global ({`"${siteConfig.name}"`}, {`"we"`}, {`"our"`}) values the confidentiality of commercial traders, manufacturers, importers, and exporters. This Privacy Policy outlines how we collect, process, and protect the business contact and shipment data you submit through our website ({siteConfig.url}), direct email, or messaging channels.
             </p>
           </section>
 

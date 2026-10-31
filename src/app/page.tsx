@@ -9,7 +9,6 @@ import { GlobalMarketsSection } from "@/components/home/global-markets-section";
 import { ProcessSteps } from "@/components/home/process-steps";
 import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { FaqSection } from "@/components/home/faq-section";
-import { FinalCta } from "@/components/home/final-cta";
 import { EnquiryForm } from "@/components/contact/enquiry-form";
 import { HomeCargoShip } from "@/components/home/home-cargo-ship";
 import { Box, CheckCircle2, Clock } from "lucide-react";
@@ -115,9 +114,6 @@ export default function HomePage() {
 
       {/* 10. Frequently Asked Questions */}
       <FaqSection />
-
-      {/* 11. Final High-Impact CTA */}
-      <FinalCta />
     </>
   );
 }

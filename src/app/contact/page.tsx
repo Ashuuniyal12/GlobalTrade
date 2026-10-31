@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "Contact Trade Operations Desk | Request Shipment Quote",
   description:
-    "Direct contact channels for Apex Global Trade: WhatsApp operations desk, corporate email, registered office details, and commercial enquiry submission.",
+    "Direct contact channels for Euronext Global in Istanbul: WhatsApp operations desk, corporate email, registered office details, and commercial enquiry submission.",
   path: "/contact",
   keywords: [
     "contact global trade company",

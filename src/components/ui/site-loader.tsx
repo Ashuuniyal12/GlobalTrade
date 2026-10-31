@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Ship } from "lucide-react";
+import { BrandMark } from "@/components/ui/brand-logo";
 
 interface ShipContainerLoad {
   id: string;
@@ -21,7 +22,7 @@ const SHIP_CARGO_MANIFEST: ShipContainerLoad[] = [
   // Tier 0 (Bottom Hold Deck)
   {
     id: "b0-t0",
-    code: "APXU 401920",
+    code: "ENXU 401920",
     bay: 0,
     tier: 0,
     color: "from-[#FF6913] to-[#B83B00]",
@@ -73,12 +74,12 @@ const SHIP_CARGO_MANIFEST: ShipContainerLoad[] = [
   },
   {
     id: "b1-t1",
-    code: "APXU 901283",
+    code: "ENXU 901283",
     bay: 1,
     tier: 1,
     color: "from-[#EA580C] to-[#9A3412]",
     border: "border-orange-300/60",
-    label: "APEX PRIORITY",
+    label: "EURONEXT PRIORITY",
     delay: 0.94,
   },
   {
@@ -105,7 +106,7 @@ const SHIP_CARGO_MANIFEST: ShipContainerLoad[] = [
   // Tier 2 (Top Weather Deck Tier)
   {
     id: "b0-t2",
-    code: "APXU 118492",
+    code: "ENXU 118492",
     bay: 0,
     tier: 2,
     color: "from-[#DC2626] to-[#991B1B]",
@@ -125,7 +126,7 @@ const SHIP_CARGO_MANIFEST: ShipContainerLoad[] = [
   },
   {
     id: "b2-t2",
-    code: "APXU 777019",
+    code: "ENXU 777019",
     bay: 2,
     tier: 2,
     color: "from-[#FF6913] to-[#C43F00]",
@@ -230,9 +231,9 @@ export function SiteLoader() {
           className="relative z-30 flex items-center justify-between px-4 sm:px-10 py-3.5 border-b border-slate-200/90 bg-white/90 backdrop-blur-md shadow-xs"
         >
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping" />
+            <BrandMark className="w-7 h-7" />
             <span className="font-mono text-[11px] sm:text-xs font-extrabold tracking-[0.2em] text-navy-950 uppercase">
-              STS GANTRY CRANE #04 · LOADING M/V APEX VOYAGER
+              EURONEXT GLOBAL · ISTANBUL AIR &amp; SEA TERMINAL
             </span>
           </div>
 
@@ -279,7 +280,7 @@ export function SiteLoader() {
 
             {/* Gantry Boom Stencil */}
             <div className="relative z-10 mx-auto px-4 py-0.5 rounded-full bg-white/95 border border-primary-500/40 shadow-xs font-mono text-[10px] sm:text-xs font-black tracking-[0.25em] text-navy-950 uppercase">
-              APEX PORT TERMINAL · MAX SWL 85 TONNES
+              EURONEXT GLOBAL TERMINAL · ISTANBUL HUB · MAX SWL 85T
             </div>
           </div>
 
@@ -563,7 +564,7 @@ export function SiteLoader() {
                   fontSize="19"
                   letterSpacing="4"
                 >
-                  APEX VOYAGER
+                  EURONEXT VOYAGER
                 </text>
                 <text
                   x="157"
@@ -574,7 +575,7 @@ export function SiteLoader() {
                   fontSize="10"
                   letterSpacing="2.5"
                 >
-                  IMO 9948210 · ROTTERDAM · SINGAPORE · JEBEL ALI
+                  IMO 9948210 · ISTANBUL · ROTTERDAM · FRANKFURT · SINGAPORE
                 </text>
               </svg>
             </div>

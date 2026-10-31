@@ -10,14 +10,14 @@ import { ArrowUpRight, Globe, FileCheck2, Ship, CheckCircle2 } from "lucide-reac
 const services = [
   {
     number: "01",
-    containerCode: "APXU-104920-1",
-    spec: "INCOTERMS 2020 · FOB / CIF / DAP",
+    containerCode: "ENXU-104920-1",
+    spec: "INCOTERMS 2020 · FCA / FOB / CIF / DAP",
     title: "International Trade\nCoordination",
     slug: "/services/international-trade",
     icon: Globe,
     headerGradient: "from-primary-500 to-primary-700",
     description:
-      "Facilitating structured commercial transactions between international buyers and verified suppliers under standard Incoterms 2020 rules — FOB, CIF, CFR, DAP.",
+      "Facilitating structured commercial transactions from our Istanbul hub between international buyers and verified suppliers under Incoterms 2020 rules.",
     highlights: [
       "Letter of Credit (LC) trade payment coordination",
       "Pre-shipment supplier milestone verification",
@@ -26,34 +26,34 @@ const services = [
   },
   {
     number: "02",
-    containerCode: "GLBU-208411-9",
-    spec: "STATUTORY DOSSIER · HS & COA",
-    title: "Customs Procedure &\nDocumentation",
+    containerCode: "ENXU-208411-9",
+    spec: "AIRPORT & SEAPORT CUSTOMS · AWB / BL",
+    title: "Airport & Port Customs\nDocumentation",
     slug: "/services/customs-documentation",
     icon: FileCheck2,
     headerGradient: "from-teal-600 to-teal-800",
     description:
-      "Preparing and auditing trade documentation packs to satisfy destination country statutory filings and port inspection protocols across every corridor we operate.",
+      "Express airport customs clearance and seaport documentation auditing to satisfy statutory filings and inspection protocols without storage delays.",
     highlights: [
-      "HS code classification & commercial invoice generation",
-      "Certificates of Origin — Non-Preferential & Preferential",
-      "MSDS, Phytosanitary & Certificate of Analysis vetting",
+      "Airport AWB & Ocean BL customs pre-clearance",
+      "A.TR, EUR.1 & Certificates of Origin (COO)",
+      "HS code audit, MSDS, Phytosanitary & COA vetting",
     ],
   },
   {
     number: "03",
-    containerCode: "MRKU-309844-5",
-    spec: "FCL · LCL · REEFER · AIR CHARTER",
-    title: "Freight & Shipping\nLogistics",
+    containerCode: "ENXU-309844-5",
+    spec: "IATA AIR CARGO · ULD · FCL & LCL",
+    title: "Air Freight & Ocean\nContainer Logistics",
     slug: "/services/freight-logistics",
     icon: Ship,
     headerGradient: "from-navy-800 to-navy-950",
     description:
-      "Coordinating containerized maritime cargo, air charter/express freight, and multi-modal inland haulage through established carrier networks worldwide.",
+      "Coordinating priority aircraft cargo charters, ULD air pallets, and containerized maritime freight through established airline and ocean carrier networks.",
     highlights: [
-      "FCL & LCL ocean freight booking",
-      "Temperature-controlled reefer & passive thermal packs",
-      "End-to-end Bill of Lading (BL) management",
+      "Express IATA air freight & airport-to-airport ULD",
+      "FCL & LCL ocean container freight booking",
+      "Temperature-controlled air & sea cold-chain packs",
     ],
   },
 ];
@@ -82,15 +82,15 @@ export function ServicesGrid() {
               className="font-black tracking-tight text-navy-950 leading-[1.06]"
               style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
             >
-              Core Trade &{" "}
+              Air, Ocean &amp;{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-700">
-                Shipping Services
+                Customs Services
               </span>
             </h2>
           </div>
           <p className="text-base text-slate-600 leading-relaxed max-w-sm lg:text-right">
-            Tilt and explore each 3D container unit — precision execution bridging suppliers,
-            customs authorities, and ocean/air carriers.
+            Tilt and explore each 3D logistics unit — bridging international suppliers,
+            airport &amp; seaport customs authorities, and air/ocean carriers.
           </p>
         </div>
 

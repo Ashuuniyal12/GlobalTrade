@@ -2,27 +2,56 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { Ship, Compass } from "lucide-react";
+import { Ship, Plane, Compass } from "lucide-react";
 
 /**
- * Renders an autonomous, realistic Ultra-Large Container Vessel (SVG)
- * with organic 2D waypoint navigation, randomized throttle regimes,
- * spontaneous mid-channel course changes, and live hydrodynamic telemetry.
+ * Autonomous Page-Wide Carrier Overlay active between the Hero and Footer:
+ * Synchronizes with the user's transport mode selection in the Hero section:
+ * - If "air" (Air Cargo & Airport Customs) is selected, shows ONLY the Boeing 777F
+ *   Air Cargo Plane SVG flying organically across the screen until the Footer.
+ * - If "sea" (Seaport & FCL/LCL Containers) is selected, shows ONLY the ULCV Cargo
+ *   Ship SVG sailing organically across the screen until the Footer.
  */
 export function HomeCargoShip() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const shipRef = useRef<HTMLDivElement>(null);
-  const spriteRef = useRef<HTMLDivElement>(null);
-  const wakeRef = useRef<HTMLDivElement>(null);
-  const telemetryTextRef = useRef<HTMLSpanElement>(null);
+  const shipWrapperRef = useRef<HTMLDivElement>(null);
+  const shipSpriteRef = useRef<HTMLDivElement>(null);
+  const shipWakeRef = useRef<HTMLDivElement>(null);
+  const shipTelemetryRef = useRef<HTMLSpanElement>(null);
 
-  // Visibility state: true only when in main content (between Hero and Footer)
+  const planeWrapperRef = useRef<HTMLDivElement>(null);
+  const planeSpriteRef = useRef<HTMLDivElement>(null);
+  const planeTrailRef = useRef<HTMLDivElement>(null);
+  const planeTelemetryRef = useRef<HTMLSpanElement>(null);
+
+  // True only when user is between the Hero section and the Site Footer
   const [isVisible, setIsVisible] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(1200);
+  // Matches the Hero section's default selected mode ("air") and updates on click
+  const [selectedMode, setSelectedMode] = useState<"air" | "sea">("air");
+  const [screenSize, setScreenSize] = useState({ width: 1280, height: 800 });
 
+  // Listen for mode changes from the Hero section ("Air Cargo" vs "Seaport Containers")
+  useEffect(() => {
+    const handleModeChange = (e: Event) => {
+      const customEvent = e as CustomEvent<"sea" | "air">;
+      if (customEvent.detail === "air" || customEvent.detail === "sea") {
+        setSelectedMode(customEvent.detail);
+      }
+    };
+
+    window.addEventListener("euronext:transport-mode", handleModeChange);
+    return () => {
+      window.removeEventListener("euronext:transport-mode", handleModeChange);
+    };
+  }, []);
+
+  // Track viewport size & scroll boundaries (Hero and Footer)
   useEffect(() => {
     const handleResize = () => {
-      setScreenWidth(window.innerWidth);
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -65,66 +94,126 @@ export function HomeCargoShip() {
     };
   }, []);
 
-  // Continuous 60fps organic & randomized maritime navigation loop
+  // Continuous 60fps Navigation Loop for whichever single mode ("air" or "sea") is active
   useEffect(() => {
+    if (!isVisible) return;
+
     let animationFrameId: number;
     let lastTime = performance.now();
     let lastScroll = window.scrollY;
 
-    const isMobile = screenWidth < 640;
+    const isMobile = screenSize.width < 640;
     const shipWidth = isMobile ? 210 : 330;
+    const planeWidth = isMobile ? 200 : 310;
 
-    const minX = 12;
-    const maxX = Math.max(minX + 100, screenWidth - shipWidth - 16);
+    // ── SEA MODE STATE: CONTINUOUS ORGANIC SHIP NAVIGATION ────────────────
+    const shipMinX = 14;
+    const shipMaxX = Math.max(shipMinX + 100, screenSize.width - shipWidth - 18);
 
-    const MANEUVER_MODES = [
-      { label: "FULL AHEAD", minSpeed: 88, maxSpeed: 122 },
-      { label: "SEA CRUISE", minSpeed: 52, maxSpeed: 82 },
-      { label: "LANE SHIFT", minSpeed: 40, maxSpeed: 68 },
-      { label: "HARBOR DRIFT", minSpeed: 22, maxSpeed: 38 },
+    const SHIP_MODES = [
+      { label: "FULL AHEAD · IST → RTM", minSpeed: 85, maxSpeed: 120 },
+      { label: "SEA CRUISE · FCL 40HC", minSpeed: 52, maxSpeed: 82 },
+      { label: "CORRIDOR TRANSIT", minSpeed: 42, maxSpeed: 70 },
+      { label: "HARBOR APPROACH", minSpeed: 28, maxSpeed: 45 },
     ];
 
-    const pickRandomWaypoint = (currentX: number, forceFlip?: boolean) => {
-      const mode =
-        MANEUVER_MODES[Math.floor(Math.random() * MANEUVER_MODES.length)];
-      // Decide direction: either flip or pick a random target anywhere across the channel
-      let nextTargetX = minX + Math.random() * (maxX - minX);
-      if (forceFlip || Math.abs(nextTargetX - currentX) < 110) {
+    const pickShipWaypoint = (currentX: number, forceFlip?: boolean) => {
+      const mode = SHIP_MODES[Math.floor(Math.random() * SHIP_MODES.length)];
+      let nextTargetX = shipMinX + Math.random() * (shipMaxX - shipMinX);
+      if (forceFlip || Math.abs(nextTargetX - currentX) < 120) {
         nextTargetX =
-          currentX > (minX + maxX) * 0.5
-            ? minX + Math.random() * ((maxX - minX) * 0.42)
-            : maxX - Math.random() * ((maxX - minX) * 0.42);
+          currentX > (shipMinX + shipMaxX) * 0.5
+            ? shipMinX + Math.random() * ((shipMaxX - shipMinX) * 0.42)
+            : shipMaxX - Math.random() * ((shipMaxX - shipMinX) * 0.42);
       }
 
       return {
-        targetX: Math.max(minX, Math.min(maxX, nextTargetX)),
-        // Random vertical lane offset (-52px deeper sea lane to +14px closer foreground)
+        targetX: Math.max(shipMinX, Math.min(shipMaxX, nextTargetX)),
         targetY: -52 + Math.random() * 66,
         targetSpeed:
           mode.minSpeed + Math.random() * (mode.maxSpeed - mode.minSpeed),
         modeLabel: mode.label,
-        nextDecisionDelay: 2200 + Math.random() * 4200, // Spontaneous course change every 2.2s - 6.4s
+        nextDecisionDelay: 2400 + Math.random() * 4000,
       };
     };
 
-    const initial = pickRandomWaypoint(screenWidth * 0.5, true);
+    const initialShipWp = pickShipWaypoint(screenSize.width * 0.5, true);
 
-    const state = {
-      x: Math.min(maxX - 30, Math.max(minX + 30, screenWidth * 0.52)),
+    const shipState = {
+      x: Math.min(shipMaxX - 30, Math.max(shipMinX + 30, screenSize.width * 0.55)),
       y: -12,
-      vx: -55,
+      vx: -65,
       vy: 0,
-      direction: -1, // -1 = facing West (left), 1 = facing East (right)
-      targetX: initial.targetX,
-      targetY: initial.targetY,
-      targetSpeed: initial.targetSpeed,
-      currentSpeed: 55,
-      modeLabel: initial.modeLabel,
+      targetX: initialShipWp.targetX,
+      targetY: initialShipWp.targetY,
+      targetSpeed: initialShipWp.targetSpeed,
+      currentSpeed: 65,
+      modeLabel: initialShipWp.modeLabel,
       wavePhase1: Math.random() * Math.PI * 2,
       wavePhase2: Math.random() * Math.PI * 2,
       scrollImpulse: 0,
+      opacity: 0,
       lastDecisionTime: performance.now(),
-      nextDecisionDelay: initial.nextDecisionDelay,
+      nextDecisionDelay: initialShipWp.nextDecisionDelay,
+      lastTelemetryUpdate: 0,
+    };
+
+    // ── AIR MODE STATE: CORNER ENTRY & CONTINUOUS SCREEN-WIDE FLIGHT ──────
+    const planeMinX = 16;
+    const planeMaxX = Math.max(planeMinX + 100, screenSize.width - planeWidth - 24);
+    const planeMinY = -(screenSize.height - 240);
+    const planeMaxY = -20;
+
+    const FLIGHT_MODES = [
+      { label: "AIR EXPRESS · IST → FRA", minSpeed: 115, maxSpeed: 165 },
+      { label: "AWB CUSTOMS CLEARED", minSpeed: 85, maxSpeed: 125 },
+      { label: "COLD-CHAIN ULD +2°C", minSpeed: 95, maxSpeed: 140 },
+      { label: "CORRIDOR CRUISE FL380", minSpeed: 75, maxSpeed: 115 },
+    ];
+
+    const pickPlaneWaypoint = (currentX: number, forceFlip?: boolean) => {
+      const mode = FLIGHT_MODES[Math.floor(Math.random() * FLIGHT_MODES.length)];
+      let nextTargetX = planeMinX + Math.random() * (planeMaxX - planeMinX);
+
+      if (forceFlip || Math.abs(nextTargetX - currentX) < 150) {
+        nextTargetX =
+          currentX > (planeMinX + planeMaxX) * 0.5
+            ? planeMinX + Math.random() * ((planeMaxX - planeMinX) * 0.4)
+            : planeMaxX - Math.random() * ((planeMaxX - planeMinX) * 0.4);
+      }
+
+      const nextTargetY =
+        planeMinY + Math.random() * (planeMaxY - planeMinY);
+
+      return {
+        targetX: Math.max(planeMinX, Math.min(planeMaxX, nextTargetX)),
+        targetY: Math.max(planeMinY, Math.min(planeMaxY, nextTargetY)),
+        targetSpeed:
+          mode.minSpeed + Math.random() * (mode.maxSpeed - mode.minSpeed),
+        modeLabel: mode.label,
+        nextDecisionDelay: 2400 + Math.random() * 3800,
+      };
+    };
+
+    const firstPlaneWp = pickPlaneWaypoint(planeMinX, true);
+
+    const planeState = {
+      x: -planeWidth * 0.65,
+      y: planeMinY - 30,
+      vx: 145,
+      vy: 45,
+      targetX: planeMaxX * 0.85,
+      targetY: planeMinY * 0.45,
+      targetSpeed: 140,
+      currentSpeed: 140,
+      modeLabel: firstPlaneWp.modeLabel,
+      wavePhase1: 0,
+      wavePhase2: 1.5,
+      scrollImpulse: 0,
+      opacity: 0,
+      hasCompletedCornerEntry: false,
+      lastDecisionTime: performance.now(),
+      nextDecisionDelay: 3200,
       lastTelemetryUpdate: 0,
     };
 
@@ -132,115 +221,221 @@ export function HomeCargoShip() {
       const dt = Math.min((currentTime - lastTime) / 1000, 0.08);
       lastTime = currentTime;
 
-      // 1. Measure scroll velocity for hydro-surge impulse
       const currentScroll = window.scrollY;
       const scrollDelta = currentScroll - lastScroll;
       lastScroll = currentScroll;
       const scrollSpeed = Math.abs(scrollDelta);
 
-      state.scrollImpulse = state.scrollImpulse * 0.91 + scrollSpeed * 0.09;
+      if (selectedMode === "sea") {
+        // ── CONTINUOUS SEA CARGO SHIP NAVIGATION TILL FOOTER ──────────────
+        shipState.scrollImpulse =
+          shipState.scrollImpulse * 0.91 + scrollSpeed * 0.09;
+        shipState.opacity = Math.min(1, shipState.opacity + dt * 2.5);
 
-      // 2. Spontaneous random course/speed/lane decision timer
-      const elapsedSinceDecision = currentTime - state.lastDecisionTime;
-      const distToTargetX = Math.abs(state.targetX - state.x);
+        const elapsedSinceDecision = currentTime - shipState.lastDecisionTime;
+        const distToTargetX = Math.abs(shipState.targetX - shipState.x);
 
-      if (
-        elapsedSinceDecision > state.nextDecisionDelay ||
-        distToTargetX < 24 ||
-        state.x <= minX + 4 ||
-        state.x >= maxX - 4
-      ) {
-        const atBoundary = state.x <= minX + 8 || state.x >= maxX - 8;
-        // 35% chance to spontaneously reverse tack mid-ocean, or 100% if near boundary
-        const shouldFlip = atBoundary || Math.random() < 0.35;
-        const nextWp = pickRandomWaypoint(state.x, shouldFlip);
+        if (
+          elapsedSinceDecision > shipState.nextDecisionDelay ||
+          distToTargetX < 26 ||
+          shipState.x <= shipMinX + 5 ||
+          shipState.x >= shipMaxX - 5
+        ) {
+          const atBoundary =
+            shipState.x <= shipMinX + 8 || shipState.x >= shipMaxX - 8;
+          const shouldFlip = atBoundary || Math.random() < 0.35;
+          const nextWp = pickShipWaypoint(shipState.x, shouldFlip);
 
-        state.targetX = nextWp.targetX;
-        state.targetY = nextWp.targetY;
-        state.targetSpeed = nextWp.targetSpeed;
-        state.modeLabel = nextWp.modeLabel;
-        state.lastDecisionTime = currentTime;
-        state.nextDecisionDelay = nextWp.nextDecisionDelay;
-      }
+          shipState.targetX = nextWp.targetX;
+          shipState.targetY = nextWp.targetY;
+          shipState.targetSpeed = nextWp.targetSpeed;
+          shipState.modeLabel = nextWp.modeLabel;
+          shipState.lastDecisionTime = currentTime;
+          shipState.nextDecisionDelay = nextWp.nextDecisionDelay;
+        }
 
-      // 3. Smoothly interpolate speed and 2D velocity vector with heavy vessel inertia
-      const desiredDirection = state.targetX >= state.x ? 1 : -1;
-      state.direction = desiredDirection;
+        const desiredDirection = shipState.targetX >= shipState.x ? 1 : -1;
+        shipState.currentSpeed +=
+          (shipState.targetSpeed - shipState.currentSpeed) * 0.035;
+        const boostedSpeed =
+          shipState.currentSpeed +
+          Math.min(shipState.scrollImpulse * 1.4, 110);
 
-      state.currentSpeed += (state.targetSpeed - state.currentSpeed) * 0.035;
-      const boostedSpeed =
-        state.currentSpeed + Math.min(state.scrollImpulse * 1.4, 110);
+        const desiredVx = desiredDirection * boostedSpeed;
+        shipState.vx += (desiredVx - shipState.vx) * 0.055;
 
-      const desiredVx = desiredDirection * boostedSpeed;
-      state.vx += (desiredVx - state.vx) * 0.055;
+        const dy = shipState.targetY - shipState.y;
+        const desiredVy =
+          Math.max(-28, Math.min(28, dy * 0.9)) +
+          Math.sin(shipState.wavePhase2 * 0.7) * 6;
+        shipState.vy += (desiredVy - shipState.vy) * 0.05;
 
-      // Vertical lane weaving + organic S-curve sine drift
-      const dy = state.targetY - state.y;
-      const desiredVy =
-        Math.max(-28, Math.min(28, dy * 0.9)) +
-        Math.sin(state.wavePhase2 * 0.7) * 6;
-      state.vy += (desiredVy - state.vy) * 0.05;
+        shipState.x += shipState.vx * dt;
+        shipState.y += shipState.vy * dt;
 
-      state.x += state.vx * dt;
-      state.y += state.vy * dt;
+        shipState.x = Math.max(shipMinX, Math.min(shipMaxX, shipState.x));
+        shipState.y = Math.max(-58, Math.min(16, shipState.y));
 
-      // Keep vessel strictly within visible bounds
-      state.x = Math.max(minX, Math.min(maxX, state.x));
-      state.y = Math.max(-58, Math.min(16, state.y));
+        shipState.wavePhase1 += dt * 2.4;
+        shipState.wavePhase2 += dt * 1.35;
 
-      // 4. Multi-frequency ocean swell heave, pitch & turning roll
-      state.wavePhase1 += dt * 2.4;
-      state.wavePhase2 += dt * 1.35;
+        const waveHeave =
+          Math.sin(shipState.wavePhase1) * 4.2 +
+          Math.cos(shipState.wavePhase2) * 2.6 +
+          shipState.y;
 
-      const waveHeave =
-        Math.sin(state.wavePhase1) * 4.2 +
-        Math.cos(state.wavePhase2) * 2.6 +
-        state.y;
+        const bankPitch =
+          Math.cos(shipState.wavePhase1 * 0.85) * 1.5 +
+          (shipState.vy / 28) * 2.4 +
+          Math.max(-2.5, Math.min(2.5, scrollDelta * 0.02));
 
-      // Pitch & bank angle responds to vertical weaving (vy), wave swell, and scroll delta
-      const bankPitch =
-        Math.cos(state.wavePhase1 * 0.85) * 1.5 +
-        (state.vy / 28) * 2.4 +
-        Math.max(-2.5, Math.min(2.5, scrollDelta * 0.02));
+        const depthScale = 0.92 + ((shipState.y + 58) / 74) * 0.14;
 
-      // Perspective depth scale: slightly smaller when higher up (-55px), larger when closer (+14px)
-      const depthScale = 0.92 + ((state.y + 58) / 74) * 0.14;
+        if (shipWrapperRef.current) {
+          shipWrapperRef.current.style.transform = `translate3d(${shipState.x.toFixed(1)}px, ${waveHeave.toFixed(1)}px, 0) scale(${depthScale.toFixed(3)})`;
+          shipWrapperRef.current.style.opacity = `${shipState.opacity.toFixed(3)}`;
+        }
 
-      // 5. Direct 60fps DOM transform updates
-      if (shipRef.current) {
-        shipRef.current.style.transform = `translate3d(${state.x}px, ${waveHeave}px, 0) scale(${depthScale.toFixed(3)})`;
-      }
+        if (shipSpriteRef.current) {
+          const facingLeft = shipState.vx <= 0;
+          const scaleX = facingLeft ? 1 : -1;
+          shipSpriteRef.current.style.transform = `scaleX(${scaleX}) rotate(${(
+            bankPitch * scaleX
+          ).toFixed(2)}deg)`;
+        }
 
-      if (spriteRef.current) {
-        // Flip sprite based on actual horizontal velocity so turns look smooth
-        const facingLeft = state.vx <= 0;
-        const scaleX = facingLeft ? 1 : -1;
-        spriteRef.current.style.transform = `scaleX(${scaleX}) rotate(${(
-          bankPitch * scaleX
-        ).toFixed(2)}deg)`;
-      }
+        if (shipWakeRef.current) {
+          const wakeScale = Math.min(
+            1.35,
+            Math.max(0.6, Math.abs(shipState.vx) / 75)
+          );
+          shipWakeRef.current.style.opacity = `${Math.min(1, wakeScale * 0.85)}`;
+          shipWakeRef.current.style.transform = `scaleX(${wakeScale.toFixed(2)})`;
+        }
 
-      if (wakeRef.current) {
-        const wakeScale = Math.min(
-          1.35,
-          Math.max(0.6, Math.abs(state.vx) / 75)
+        if (
+          shipTelemetryRef.current &&
+          currentTime - shipState.lastTelemetryUpdate > 280
+        ) {
+          shipState.lastTelemetryUpdate = currentTime;
+          const knots = (14.5 + (Math.abs(shipState.vx) / 120) * 9.5).toFixed(1);
+          shipTelemetryRef.current.textContent = `${knots} KTS · ${shipState.modeLabel}`;
+        }
+      } else {
+        // ── CONTINUOUS AIR CARGO PLANE FLIGHT TILL FOOTER ─────────────────
+        planeState.scrollImpulse =
+          planeState.scrollImpulse * 0.91 + scrollSpeed * 0.09;
+        planeState.opacity = Math.min(1, planeState.opacity + dt * 2.2);
+
+        if (
+          !planeState.hasCompletedCornerEntry &&
+          planeState.x > planeMinX + 40
+        ) {
+          planeState.hasCompletedCornerEntry = true;
+          planeState.lastDecisionTime = currentTime;
+        }
+
+        const elapsedSinceDecision = currentTime - planeState.lastDecisionTime;
+        const distToTargetX = Math.abs(planeState.targetX - planeState.x);
+
+        if (
+          planeState.hasCompletedCornerEntry &&
+          (elapsedSinceDecision > planeState.nextDecisionDelay ||
+            distToTargetX < 35 ||
+            planeState.x <= planeMinX + 6 ||
+            planeState.x >= planeMaxX - 6)
+        ) {
+          const atBoundary =
+            planeState.x <= planeMinX + 10 || planeState.x >= planeMaxX - 10;
+          const shouldFlip = atBoundary || Math.random() < 0.38;
+          const nextWp = pickPlaneWaypoint(planeState.x, shouldFlip);
+
+          planeState.targetX = nextWp.targetX;
+          planeState.targetY = nextWp.targetY;
+          planeState.targetSpeed = nextWp.targetSpeed;
+          planeState.modeLabel = nextWp.modeLabel;
+          planeState.lastDecisionTime = currentTime;
+          planeState.nextDecisionDelay = nextWp.nextDecisionDelay;
+        }
+
+        const desiredDirection = planeState.targetX >= planeState.x ? 1 : -1;
+        planeState.currentSpeed +=
+          (planeState.targetSpeed - planeState.currentSpeed) * 0.04;
+        const boostedSpeed =
+          planeState.currentSpeed +
+          Math.min(planeState.scrollImpulse * 1.6, 130);
+
+        const desiredVx = desiredDirection * boostedSpeed;
+        planeState.vx += (desiredVx - planeState.vx) * 0.06;
+
+        planeState.wavePhase1 += dt * 2.1;
+        planeState.wavePhase2 += dt * 1.3;
+
+        const dy = planeState.targetY - planeState.y;
+        const desiredVy =
+          Math.max(-55, Math.min(55, dy * 0.85)) +
+          Math.sin(planeState.wavePhase1) * 10;
+        planeState.vy += (desiredVy - planeState.vy) * 0.055;
+
+        planeState.x += planeState.vx * dt;
+        planeState.y += planeState.vy * dt;
+
+        if (planeState.hasCompletedCornerEntry) {
+          planeState.x = Math.max(
+            planeMinX,
+            Math.min(planeMaxX, planeState.x)
+          );
+          planeState.y = Math.max(
+            planeMinY,
+            Math.min(planeMaxY, planeState.y)
+          );
+        }
+
+        const airHeave =
+          planeState.y +
+          Math.sin(planeState.wavePhase1) * 4.5 +
+          Math.cos(planeState.wavePhase2) * 2.5;
+
+        const facingRight = planeState.vx >= 0;
+        const scaleX = facingRight ? 1 : -1;
+
+        const pitchAngle = Math.max(
+          -12,
+          Math.min(12, (planeState.vy / 55) * 9 + scrollDelta * 0.02)
         );
-        wakeRef.current.style.opacity = `${Math.min(1, wakeScale * 0.85)}`;
-        wakeRef.current.style.transform = `scaleX(${wakeScale.toFixed(2)})`;
-      }
 
-      // Update live telemetry readout every ~280ms
-      if (
-        telemetryTextRef.current &&
-        currentTime - state.lastTelemetryUpdate > 280
-      ) {
-        state.lastTelemetryUpdate = currentTime;
-        const knots = (11.5 + (Math.abs(state.vx) / 120) * 12.8).toFixed(1);
-        const hdg =
-          state.vx < 0
-            ? Math.round(268 + state.vy * 0.4)
-            : Math.round(88 + state.vy * 0.4);
-        telemetryTextRef.current.textContent = `${knots} KTS · HDG ${hdg}° · ${state.modeLabel}`;
+        const altitudeRatio =
+          (planeState.y - planeMinY) / Math.max(1, planeMaxY - planeMinY);
+        const depthScale = 0.86 + Math.max(0, Math.min(1, altitudeRatio)) * 0.18;
+
+        if (planeWrapperRef.current) {
+          planeWrapperRef.current.style.transform = `translate3d(${planeState.x.toFixed(1)}px, ${airHeave.toFixed(1)}px, 0) scale(${depthScale.toFixed(3)})`;
+          planeWrapperRef.current.style.opacity = `${planeState.opacity.toFixed(3)}`;
+        }
+
+        if (planeSpriteRef.current) {
+          planeSpriteRef.current.style.transform = `scaleX(${scaleX}) rotate(${(
+            pitchAngle * scaleX
+          ).toFixed(2)}deg)`;
+        }
+
+        if (planeTrailRef.current) {
+          const trailScale = Math.min(
+            1.4,
+            Math.max(0.65, Math.abs(planeState.vx) / 95)
+          );
+          planeTrailRef.current.style.opacity = `${Math.min(0.9, trailScale * 0.8)}`;
+          planeTrailRef.current.style.transform = `scaleX(${trailScale.toFixed(2)})`;
+        }
+
+        if (
+          planeTelemetryRef.current &&
+          currentTime - planeState.lastTelemetryUpdate > 280
+        ) {
+          planeState.lastTelemetryUpdate = currentTime;
+          const kts = Math.round(455 + (Math.abs(planeState.vx) / 160) * 65);
+          planeTelemetryRef.current.textContent = `${kts} KTS · ${planeState.modeLabel}`;
+        }
       }
 
       animationFrameId = requestAnimationFrame(loop);
@@ -248,77 +443,134 @@ export function HomeCargoShip() {
 
     animationFrameId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [screenWidth]);
+  }, [isVisible, selectedMode, screenSize.width, screenSize.height]);
 
   return (
     <div
       ref={containerRef}
-      className={`fixed bottom-3 sm:bottom-5 left-0 right-0 h-36 sm:h-44 pointer-events-none z-40 transition-all duration-700 select-none overflow-visible ${
-        isVisible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-12 pointer-events-none"
+      className={`fixed bottom-4 sm:bottom-6 left-0 right-0 h-36 sm:h-44 pointer-events-none z-40 transition-opacity duration-500 select-none overflow-visible ${
+        isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       aria-hidden="true"
     >
-      {/* Moving ULCV Cargo Vessel */}
-      <div
-        ref={shipRef}
-        className="absolute bottom-2 left-0 will-change-transform flex items-center"
-        style={{ transform: "translate3d(100px, 0px, 0)" }}
-      >
-        <div className="relative">
-          {/* Flipped Ship Sprite (Bow leads direction of travel) */}
-          <div ref={spriteRef} className="relative will-change-transform">
-            {/* Realistic Vector ULCV Ship with Live Animated Beacons */}
-            <div className="relative w-52 sm:w-68 md:w-80 lg:w-92 h-auto drop-shadow-[0_18px_28px_rgba(6,16,30,0.42)]">
-              <img
-                src="/images/cargo-ship.svg"
-                alt=""
-                width={720}
-                height={340}
-                className="w-full h-auto select-none pointer-events-none"
-              />
+      {/* ── SEA CARGO MODE: SHOW ONLY THE CARGO SHIP SVG ─────────────────── */}
+      {selectedMode === "sea" && (
+        <div
+          ref={shipWrapperRef}
+          className="absolute bottom-2 left-0 will-change-transform flex items-center"
+          style={{ transform: "translate3d(400px, 0px, 0)", opacity: 0 }}
+        >
+          <div className="relative">
+            <div ref={shipSpriteRef} className="relative will-change-transform">
+              <div className="relative w-52 sm:w-68 md:w-80 lg:w-92 h-auto drop-shadow-[0_18px_28px_rgba(6,16,30,0.42)]">
+                <img
+                  src="/images/cargo-ship.svg"
+                  alt=""
+                  width={720}
+                  height={340}
+                  className="w-full h-auto select-none pointer-events-none"
+                />
 
-              {/* Live Pulsing Forward Masthead Light */}
-              <span
-                className="absolute left-[14.2%] top-[29.5%] w-2 h-2 rounded-full bg-amber-300 shadow-[0_0_10px_#fde047] animate-ping"
-                style={{ animationDuration: "2.4s" }}
-              />
+                {/* Live Pulsing Forward Masthead Light */}
+                <span
+                  className="absolute left-[14.2%] top-[29.5%] w-2 h-2 rounded-full bg-amber-300 shadow-[0_0_10px_#fde047] animate-ping"
+                  style={{ animationDuration: "2.4s" }}
+                />
 
-              {/* Live Rotating Bridge Radar Scanner Bar */}
-              <span
-                className="absolute left-[70.8%] top-[15%] w-3.5 h-0.5 bg-sky-300 rounded-full shadow-[0_0_6px_#38bdf8] animate-spin"
-                style={{ animationDuration: "1.8s" }}
-              />
+                {/* Live Rotating Bridge Radar Scanner Bar */}
+                <span
+                  className="absolute left-[70.8%] top-[15%] w-3.5 h-0.5 bg-sky-300 rounded-full shadow-[0_0_6px_#38bdf8] animate-spin"
+                  style={{ animationDuration: "1.8s" }}
+                />
 
-              {/* Live Blinking Port Bridge Wing Red Beacon */}
-              <span className="absolute left-[65.5%] top-[25.5%] w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse" />
+                {/* Live Blinking Port Bridge Wing Red Beacon */}
+                <span className="absolute left-[65.5%] top-[25.5%] w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse" />
+              </div>
+
+              {/* Foaming Ocean Wake Trailing Behind Stern */}
+              <div
+                ref={shipWakeRef}
+                className="absolute left-[82%] bottom-3 sm:bottom-4 flex flex-col gap-1 pointer-events-none pl-1 origin-left"
+              >
+                <div className="w-28 sm:w-56 h-[3.5px] bg-gradient-to-r from-white via-cyan-300/80 to-transparent blur-[1px] rounded-full" />
+                <div className="w-20 sm:w-44 h-[2.5px] bg-gradient-to-r from-sky-200/95 via-teal-300/50 to-transparent blur-[1px] rounded-full translate-y-1" />
+              </div>
             </div>
 
-            {/* Dynamic Foaming Ocean Wake Trailing Behind Stern */}
-            <div
-              ref={wakeRef}
-              className="absolute left-[82%] bottom-3 sm:bottom-4 flex flex-col gap-1 pointer-events-none pl-1 origin-left transition-opacity duration-200"
-            >
-              <div className="w-28 sm:w-56 h-[3.5px] bg-gradient-to-r from-white via-cyan-300/80 to-transparent blur-[1px] rounded-full" />
-              <div className="w-20 sm:w-44 h-[2.5px] bg-gradient-to-r from-sky-200/95 via-teal-300/50 to-transparent blur-[1px] rounded-full translate-y-1" />
+            {/* Upright Ship Telemetry Badge */}
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-950/95 text-[10px] font-mono text-white/95 border border-white/15 shadow-xl whitespace-nowrap select-none backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <Compass
+                className="w-3 h-3 text-primary-400 animate-spin"
+                style={{ animationDuration: "9s" }}
+              />
+              <Ship className="w-2.5 h-2.5 text-teal-400 inline" />
+              <span ref={shipTelemetryRef} className="text-teal-300 font-bold">
+                19.4 KTS · SEA CRUISE · FCL 40HC
+              </span>
             </div>
-          </div>
-
-          {/* Live Dynamic Telemetry Badge (Always stays upright and readable) */}
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-950/95 text-[10px] font-mono text-white/95 border border-white/15 shadow-xl whitespace-nowrap select-none backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <Compass
-              className="w-3 h-3 text-primary-400 animate-spin"
-              style={{ animationDuration: "9s" }}
-            />
-            <Ship className="w-2.5 h-2.5 text-teal-400 inline" />
-            <span ref={telemetryTextRef} className="text-teal-300 font-bold">
-              19.4 KTS · HDG 270° · SEA CRUISE
-            </span>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* ── AIR CARGO MODE: SHOW ONLY THE AIR CARGO PLANE SVG ────────────── */}
+      {selectedMode === "air" && (
+        <div
+          ref={planeWrapperRef}
+          className="absolute bottom-4 left-0 will-change-transform flex items-center"
+          style={{ transform: "translate3d(-260px, -420px, 0)", opacity: 0 }}
+        >
+          <div className="relative">
+            <div ref={planeSpriteRef} className="relative will-change-transform">
+              {/* Realistic Boeing 777F Air Cargo Jet with Navigation Strobes */}
+              <div className="relative w-52 sm:w-68 md:w-80 lg:w-88 h-auto drop-shadow-[0_22px_32px_rgba(8,18,33,0.32)]">
+                <img
+                  src="/images/airplane.svg"
+                  alt=""
+                  width={800}
+                  height={320}
+                  className="w-full h-auto select-none pointer-events-none"
+                />
+
+                {/* Blinking Upper Fuselage Anti-Collision Red Strobe */}
+                <span
+                  className="absolute left-[56.8%] top-[38%] w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444] animate-ping"
+                  style={{ animationDuration: "1.6s" }}
+                />
+
+                {/* Blinking Starboard Wingtip Green Strobe */}
+                <span
+                  className="absolute left-[22.8%] top-[92%] w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399] animate-pulse"
+                />
+
+                {/* Blinking Tail Fin White Strobe */}
+                <span
+                  className="absolute left-[8%] top-[7.5%] w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_#ffffff] animate-ping"
+                  style={{ animationDuration: "2.1s" }}
+                />
+              </div>
+
+              {/* Jet Contrail Slipstream Trailing Behind Wing & Engine */}
+              <div
+                ref={planeTrailRef}
+                className="absolute right-[84%] top-[62%] flex flex-col gap-1.5 pointer-events-none pr-1 origin-right"
+              >
+                <div className="w-28 sm:w-52 h-[3px] bg-gradient-to-l from-sky-300/85 via-white/70 to-transparent blur-[1px] rounded-full" />
+                <div className="w-20 sm:w-36 h-[2px] bg-gradient-to-l from-white/90 via-sky-200/50 to-transparent blur-[1px] rounded-full translate-y-1.5" />
+              </div>
+            </div>
+
+            {/* Upright Air Cargo Telemetry Badge */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-950/95 text-[10px] font-mono text-white/95 border border-sky-400/30 shadow-xl whitespace-nowrap select-none backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping" />
+              <Plane className="w-3 h-3 text-primary-400 inline" />
+              <span ref={planeTelemetryRef} className="text-sky-300 font-bold">
+                492 KTS · AIR EXPRESS · IST → FRA
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

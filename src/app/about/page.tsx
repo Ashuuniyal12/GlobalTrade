@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import {
   Globe2,
   ShieldCheck,
@@ -21,7 +22,7 @@ import { siteConfig } from "@/config/site";
 export const metadata: Metadata = constructMetadata({
   title: "About Our Company | Operational Integrity in Global Trade",
   description:
-    "Learn about Apex Global Trade's approach to cross-border import/export trade facilitation, customs documentation support, and multi-modal logistics coordination.",
+    "Learn about Euronext Global's approach to cross-border import/export trade facilitation, airport & port customs documentation support, and multi-modal logistics coordination from Istanbul.",
   path: "/about",
   keywords: [
     "about global trade company",
@@ -69,7 +70,7 @@ export default function AboutPage() {
             Built on Dependability, Documentation Precision, and Global Reach
           </h1>
           <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed">
-            Apex Global Trade coordinates commercial transactions and cross-border shipping across key international trade corridors. We bridge the critical gap between product availability and compliant international delivery.
+            Headquartered in Istanbul, Euronext Global coordinates commercial transactions, express air cargo, and cross-border ocean shipping across key international trade corridors. We bridge the critical gap between product availability and compliant international delivery.
           </p>
         </div>
 
@@ -80,10 +81,10 @@ export default function AboutPage() {
               Our Role in the International Trade Ecosystem
             </h2>
             <p>
-              In modern cross-border commerce, the primary challenge is rarely moving freight from Point A to Point B—it is navigating the intricate web of destination customs rules, import licensing, export documentation, and risk allocation between commercial parties.
+              In modern cross-border commerce, the primary challenge is rarely moving freight from Point A to Point B—it is navigating the intricate web of destination airport and seaport customs rules, import licensing, export documentation, and risk allocation between commercial parties.
             </p>
             <p>
-              Apex Global Trade operates as a dedicated international trade facilitation and logistics coordination partner. We assist commercial buyers and suppliers in structuring shipments correctly from the outset.
+              Euronext Global operates as a dedicated international trade facilitation and logistics coordination partner. We assist commercial buyers and suppliers in structuring air and sea shipments correctly from the outset.
             </p>
             <p>
               While we maintain specialized expertise in the demanding requirements of pharmaceutical consignments and active pharmaceutical ingredients (APIs), our operational framework serves a diverse cross-section of global industry, including textiles, industrial raw materials, minerals, and general commercial cargo.
@@ -103,21 +104,24 @@ export default function AboutPage() {
           <div className="lg:col-span-5 space-y-6">
             <Card className="bg-navy-900 text-white border-navy-800">
               <CardHeader>
+                <div className="pb-3 mb-3 border-b border-navy-800">
+                  <BrandLogo theme="dark" size="sm" />
+                </div>
                 <div className="flex items-center gap-3">
-                  <Building2 className="w-6 h-6 text-gold-400" />
-                  <h3 className="text-lg font-bold text-white">
+                  <Building2 className="w-5 h-5 text-gold-400" />
+                  <h3 className="text-base font-bold text-white">
                     Operations Overview
                   </h3>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4 text-xs text-slate-300">
                 <div className="pb-3 border-b border-navy-800">
-                  <strong className="text-slate-100 block mb-1">Trade Desks</strong>
-                  <span>Asia-Pacific, Middle East & GCC, Europe, and North America</span>
+                  <strong className="text-slate-100 block mb-1">Headquarters &amp; Trade Desks</strong>
+                  <span>Istanbul (Türkiye) HQ • Europe, Middle East &amp; GCC, Asia-Pacific, and North America</span>
                 </div>
                 <div className="pb-3 border-b border-navy-800">
-                  <strong className="text-slate-100 block mb-1">Key Corridors</strong>
-                  <span>Maritime routes connecting Mumbai, Jebel Ali, Rotterdam, Singapore, and Houston</span>
+                  <strong className="text-slate-100 block mb-1">Key Air &amp; Sea Corridors</strong>
+                  <span>Istanbul Airport (IST), Ambarli, Frankfurt (FRA), Rotterdam, Dubai (DXB/Jebel Ali), Singapore, and Houston</span>
                 </div>
                 <div className="pb-3 border-b border-navy-800">
                   <strong className="text-slate-100 block mb-1">Core Sectors</strong>

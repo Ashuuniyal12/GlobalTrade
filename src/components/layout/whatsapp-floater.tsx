@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { siteConfig } from "@/config/site";
 import { formatWhatsAppUrl } from "@/lib/utils";
 import { MessageCircle, X } from "lucide-react";
+import { BrandMark } from "@/components/ui/brand-logo";
 
 export function WhatsAppFloater() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,8 +34,8 @@ export function WhatsAppFloater() {
         <div className="mb-3 w-72 rounded-xl bg-white p-4 shadow-2xl border border-slate-200 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-bold text-navy-900">Trade Ops Desk</span>
+              <BrandMark className="w-6 h-6" />
+              <span className="text-xs font-bold text-navy-900">Euronext Ops Desk</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -75,7 +76,7 @@ export function WhatsAppFloater() {
           target="_blank"
           rel="noopener noreferrer"
           className="w-13 h-13 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300"
-          aria-label="Chat directly on WhatsApp with Apex Global Trade"
+          aria-label="Chat directly on WhatsApp with Euronext Global"
         >
           <MessageCircle className="w-7 h-7" />
         </a>

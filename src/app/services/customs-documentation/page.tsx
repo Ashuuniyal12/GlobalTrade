@@ -88,7 +88,7 @@ export default function CustomsDocumentationPage() {
                 Over 70% of cargo detentions, port storage penalties, and customs rejections occur due to clerical discrepancies in documentation—such as misdeclared HS codes, inaccurate unit values, omitted country-of-origin proofs, or outdated MSDS formats.
               </p>
               <p className="mt-3">
-                Apex Global Trade works proactively with exporters and importers to assemble, audit, and validate complete shipping documentation portfolios before cargo leaves the manufacturing facility or warehouse.
+                Euronext Global works proactively with exporters and importers to assemble, audit, and validate complete airport and seaport shipping documentation portfolios—including Air Waybills (AWB), A.TR &amp; EUR.1 movement certificates, and HS dossiers—before cargo leaves the manufacturing facility or warehouse.
               </p>
             </div>
 
@@ -120,7 +120,7 @@ export default function CustomsDocumentationPage() {
                 <span>Professional Boundary Notice</span>
               </h3>
               <p className="text-xs leading-relaxed text-amber-900">
-                Apex Global Trade prepares, audits, and facilitates commercial documentation. Final clearance decisions, physical examinations, and statutory duties are determined exclusively by the sovereign customs authority of the importing jurisdiction. We collaborate with licensed customs brokers at destination ports to execute formal clearance.
+                Euronext Global prepares, audits, and facilitates commercial documentation. Final clearance decisions, physical examinations, and statutory duties are determined exclusively by the sovereign customs authority of the importing airport or seaport jurisdiction. We collaborate with licensed customs brokers at destination terminals to execute formal clearance.
               </p>
             </div>
           </div>

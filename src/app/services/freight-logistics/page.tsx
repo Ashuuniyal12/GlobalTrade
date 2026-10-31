@@ -84,7 +84,7 @@ export default function FreightLogisticsPage() {
                 Carrier-Neutral Shipping Management
               </h2>
               <p>
-                Unlike single-carrier freight forwarders restricted to their own vessels or flights, Apex Global Trade operates as an independent logistics coordinator. This allows our operations team to evaluate multiple carrier sailings, transit times, and demurrage policies to select the optimal route for your specific commodity.
+                Unlike single-carrier freight forwarders restricted to their own vessels or flights, Euronext Global operates as an independent air and ocean logistics coordinator. This allows our Istanbul operations team to evaluate multiple airline cargo schedules, vessel sailings, transit times, and terminal handling policies to select the optimal route for your specific commodity.
               </p>
               <p className="mt-3">
                 From container release at origin to final delivery order (DO) release at destination, we coordinate every operational handoff so your supply chain remains transparent and punctual.

@@ -9,9 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Globe, FileCheck2, Ship, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = constructMetadata({
-  title: "Cross-Border Services | International Trade, Customs & Freight",
+  title: "Cross-Border Services | International Trade, Airport Customs & Freight",
   description:
-    "Comprehensive overview of Apex Global Trade services: commercial trade facilitation, customs documentation preparation, and international freight logistics coordination.",
+    "Comprehensive overview of Euronext Global services: commercial trade facilitation, airport & seaport customs documentation preparation, and international air/ocean freight logistics coordination.",
   path: "/services",
   keywords: [
     "international trade services",

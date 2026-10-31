@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "Industries & Sectors | Cross-Border Cargo Specialization",
   description:
-    "Explore the industrial and commercial sectors supported by Apex Global Trade: pharmaceuticals, APIs, textiles, raw materials, polymers, and machinery.",
+    "Explore the industrial and commercial sectors supported by Euronext Global: pharmaceuticals, APIs, textiles, raw materials, polymers, and machinery.",
   path: "/industries",
   keywords: [
     "global trade industries",

@@ -47,8 +47,8 @@ const THERMAL_MODES = [
     label: "+15°C to +25°C",
     name: "Controlled Room Temp",
     humidity: "50% RH",
-    unit: "APXU-719024-8",
-    pack: "Thermal Blanket + GDP Liner",
+    unit: "ENXU-719024-8",
+    pack: "IATA Air Thermal + GDP Liner",
   },
   {
     id: "frozen",

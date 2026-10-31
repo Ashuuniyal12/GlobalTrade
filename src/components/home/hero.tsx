@@ -24,6 +24,8 @@ import {
   Activity,
   Sparkles,
   Layers,
+  Plane,
+  FileCheck2,
 } from "lucide-react";
 
 interface Container3DSpec {
@@ -31,6 +33,7 @@ interface Container3DSpec {
   code: string;
   isoType: string;
   mode: string;
+  transportBadge: string;
   cargo: string;
   route: string;
   temp: string;
@@ -49,14 +52,15 @@ interface Container3DSpec {
 const INTERACTIVE_CONTAINERS: Container3DSpec[] = [
   {
     id: "pharma",
-    code: "APXU 904211-8",
-    isoType: "45R1 · 40' HC REEFER",
-    mode: "COLD-CHAIN REEFER",
+    code: "ENXU 904211-8",
+    isoType: "IATA ULD / 45R1 REEFER",
+    mode: "AIR & SEA COLD-CHAIN",
+    transportBadge: "AIRPORT + PORT GDP",
     cargo: "Finished Pharmaceuticals & APIs",
-    route: "Nhava Sheva → Rotterdam",
+    route: "Istanbul (IST) → Frankfurt (FRA)",
     temp: "+2.4°C Locked",
     weight: "28,400 KG GROSS",
-    status: "GDP VALIDATED · IN TRANSIT",
+    status: "AWB & GDP VALIDATED",
     isReefer: true,
     sideWallBg: "linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 65%, #E2E8F0 100%)",
     roofBg: "linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 100%)",
@@ -67,11 +71,12 @@ const INTERACTIVE_CONTAINERS: Container3DSpec[] = [
   },
   {
     id: "ocean",
-    code: "GLBU 448109-2",
+    code: "ENXU 448109-2",
     isoType: "45G1 · 40' HIGH CUBE",
     mode: "40' HIGH CUBE FCL",
+    transportBadge: "OCEAN CONTAINER",
     cargo: "Textiles, Yarns & Industrial Goods",
-    route: "Singapore → Jebel Ali",
+    route: "Istanbul (Ambarli) → Rotterdam",
     temp: "Ambient Dry",
     weight: "32,500 KG GROSS",
     status: "BL ISSUED · VESSEL BERTHED",
@@ -85,14 +90,15 @@ const INTERACTIVE_CONTAINERS: Container3DSpec[] = [
   },
   {
     id: "customs",
-    code: "TRDU 772940-5",
-    isoType: "22G1 · HEAVY DUTY FCL",
-    mode: "PRIORITY CUSTOMS PACK",
-    cargo: "Specialty Chemicals & Minerals",
-    route: "Hamburg → Houston",
+    code: "ENXU 772940-5",
+    isoType: "AWB / A.TR / EUR.1 PACK",
+    mode: "AIRPORT & PORT CUSTOMS",
+    transportBadge: "EXPRESS AIR CLEARANCE",
+    cargo: "Urgent Air Cargo, Chemicals & Spares",
+    route: "Istanbul (IST) → Dubai (DXB) / JFK",
     temp: "Controlled 18°C",
-    weight: "30,900 KG GROSS",
-    status: "HS CODE & COA AUDITED",
+    weight: "14,200 KG AIR / FCL",
+    status: "AIRPORT CUSTOMS CLEARED",
     isReefer: false,
     sideWallBg: "linear-gradient(180deg, #176B87 0%, #11576F 65%, #082933 100%)",
     roofBg: "linear-gradient(135deg, #2B829F 0%, #11576F 100%)",
@@ -104,12 +110,87 @@ const INTERACTIVE_CONTAINERS: Container3DSpec[] = [
 ];
 
 const LIVE_TICKER_ITEMS = [
-  "ROTTERDAM GATEWAY · FCL CLEARANCE 99.4%",
-  "JEBEL ALI HUB · COLD-CHAIN REEFER +2°C TO +8°C",
-  "SINGAPORE STRAIT · MULTI-MODAL TRANSIT ACTIVE",
-  "HOUSTON FREIGHT DESK · INCOTERMS 2020 VERIFIED",
-  "API & PHARMA DOSSIER · COA + MSDS PRE-VETTED",
-  "ANTWERP & HAMBURG · EUR1 & ORIGIN CERTIFICATES",
+  "ISTANBUL AIRPORT (IST) · EXPRESS AIR CARGO & AWB CUSTOMS CLEARANCE",
+  "FRANKFURT (FRA) & LONDON (LHR) · IATA PHARMA COLD-CHAIN +2°C TO +8°C",
+  "AMBARLI & ROTTERDAM GATEWAY · FCL / LCL CONTAINER CLEARANCE 99.4%",
+  "DUBAI (DXB / JEBEL ALI) · AIR-SEA INTERMODAL TRANSIT ACTIVE",
+  "A.TR · EUR.1 · CERTIFICATE OF ORIGIN & HS CODE PRE-VETTED",
+  "NEW YORK (JFK) & HOUSTON · INCOTERMS 2020 VERIFIED DESK",
+];
+
+interface AirCargoSpec {
+  id: string;
+  awbCode: string;
+  uldType: string;
+  mode: string;
+  cargo: string;
+  route: string;
+  temp: string;
+  weight: string;
+  status: string;
+  clearance: string;
+  crateWallBg: string;
+  crateTopBg: string;
+  crateSideBg: string;
+  strapColor: string;
+  badgeColor: string;
+}
+
+const INTERACTIVE_AIR_UNITS: AirCargoSpec[] = [
+  {
+    id: "air-express",
+    awbCode: "AWB 235-44109842",
+    uldType: "PMC-96x125 NETTED PALLET",
+    mode: "NETTED PMC AIR PALLET",
+    cargo: "Multi-Box Commercial & Apparel Consignment",
+    route: "Istanbul (IST) → Frankfurt (FRA) / LHR",
+    temp: "Main Deck Pressurized 18°C",
+    weight: "4,650 KG ULD GROSS",
+    status: "HIGH-LOADER LOCKED · AWB CLEARED",
+    clearance: "Fast-Track A.TR / EUR.1 Filing",
+    crateWallBg:
+      "linear-gradient(180deg, #E6CBA8 0%, #D4B083 55%, #C19765 100%)",
+    crateTopBg: "linear-gradient(135deg, #F1DEC4 0%, #D4B083 100%)",
+    crateSideBg: "linear-gradient(180deg, #C19765 0%, #9E7647 100%)",
+    strapColor: "#FACC15",
+    badgeColor: "#FF6913",
+  },
+  {
+    id: "air-pharma",
+    awbCode: "AWB 235-89401120",
+    uldType: "RKN / LD3 ENVIROTAINER",
+    mode: "PHARMA COLD-CHAIN ULD",
+    cargo: "Biologics, Vaccines & Finished Pharma",
+    route: "Istanbul (IST) → Zurich / New York (JFK)",
+    temp: "+2.0°C to +8.0°C Active",
+    weight: "1,580 KG ULD GROSS",
+    status: "AIRPORT CUSTOMS PRE-CLEARED",
+    clearance: "GDP · COA · Health Release",
+    crateWallBg:
+      "linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 60%, #CBD5E1 100%)",
+    crateTopBg: "linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 100%)",
+    crateSideBg: "linear-gradient(180deg, #E2E8F0 0%, #94A3B8 100%)",
+    strapColor: "#0284C7",
+    badgeColor: "#0284C7",
+  },
+  {
+    id: "air-api",
+    awbCode: "AWB 235-77219004",
+    uldType: "PAG HEAVY AIR PALLET",
+    mode: "PRIORITY API & INDUSTRIAL",
+    cargo: "Active Pharmaceutical Ingredients & Spares",
+    route: "Istanbul (IST) → Dubai (DXB) / SIN",
+    temp: "+15.0°C Controlled",
+    weight: "3,420 KG ULD GROSS",
+    status: "IATA DGD & MSDS APPROVED",
+    clearance: "Airport Customs Green Lane",
+    crateWallBg:
+      "linear-gradient(180deg, #1E3A5F 0%, #112540 65%, #091526 100%)",
+    crateTopBg: "linear-gradient(135deg, #2B5282 0%, #152F50 100%)",
+    crateSideBg: "linear-gradient(180deg, #0F223A 0%, #07111E 100%)",
+    strapColor: "#FF6913",
+    badgeColor: "#10B981",
+  },
 ];
 
 // Exact 3D Prism Dimensions (in pixels) — enlarged to occupy prominent hero space
@@ -117,14 +198,38 @@ const BOX_W = 368; // Length of the 40' container (X axis)
 const BOX_H = 104; // Height of the container (Y axis)
 const BOX_D = 132; // Width/depth of the container (Z axis)
 
+// 3D Air Cargo Netted ULD Pallet Dimensions (in pixels)
+const ULD_W = 216;
+const ULD_H = 88;
+const ULD_D = 116;
+
 /**
- * Light-themed, editorial & 3D interactive Hero section featuring a mathematically
- * locked 3D ISO shipping container stack, split-screen parallax, and live telemetry.
+ * Light-themed, editorial & 3D interactive Hero section featuring clickable
+ * mode switching between "Air Cargo & Airport Customs" (3D Aircraft Cargo Door,
+ * Hydraulic Scissor High-Loader & Netted ULD Cargo Pallet) and "Seaport & FCL/LCL
+ * Containers" (3D ISO Container Stack).
  */
 export function Hero() {
-  const [activeIdx, setActiveIdx] = useState<number>(1);
+  const [heroMode, setHeroMode] = useState<"sea" | "air">("air");
+  const [activeIdx, setActiveIdx] = useState<number>(0);
   const [isExploded, setIsExploded] = useState<boolean>(false);
+  const [isAirLoaderElevated, setIsAirLoaderElevated] = useState<boolean>(false);
   const heroRef = useRef<HTMLElement>(null);
+
+  /**
+   * Switches between Air Cargo ("air") and Sea Cargo ("sea") modes
+   * and broadcasts a custom event so the page-wide moving SVG matches.
+   */
+  const handleSelectMode = (mode: "sea" | "air") => {
+    setHeroMode(mode);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent<"sea" | "air">("euronext:transport-mode", {
+          detail: mode,
+        })
+      );
+    }
+  };
 
   const whatsappUrl = formatWhatsAppUrl(
     siteConfig.contact.whatsappNumber,
@@ -170,7 +275,12 @@ export function Hero() {
     mouseY.set(0.16);
   };
 
-  const activeContainer = INTERACTIVE_CONTAINERS[activeIdx];
+  const activeContainer = INTERACTIVE_CONTAINERS[activeIdx] || INTERACTIVE_CONTAINERS[0];
+  const activeAirUnit = INTERACTIVE_AIR_UNITS[activeIdx] || INTERACTIVE_AIR_UNITS[0];
+
+  // Subtle 3D tilt for the aircraft view
+  const planeRotateY = useTransform(springX, [-0.5, 0.5], [-12, 12]);
+  const planeRotateX = useTransform(springY, [-0.5, 0.5], [10, -10]);
 
   return (
     <section
@@ -237,15 +347,15 @@ export function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
-              className="flex flex-wrap items-center gap-3.5 mb-7"
+              className="flex flex-wrap items-center gap-3 mb-7"
             >
-              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-500">
-                Import · Export · Logistics
+              <span className="text-[11px] font-bold tracking-[0.22em] uppercase text-slate-500">
+                Air Freight · Ocean Containers · Airport Customs
               </span>
-              <span className="w-8 h-px bg-slate-300" />
+              <span className="w-6 h-px bg-slate-300" />
               <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1 rounded-full shadow-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse" />
-                Live Corridors
+                Istanbul HQ · Global Corridors
               </span>
             </motion.div>
 
@@ -267,93 +377,220 @@ export function Hero() {
               </span>
             </motion.h1>
 
-            {/* Sub-copy */}
+            {/* Sub-copy highlighting Air Cargo, Airport Customs Clearance & Ocean Freight */}
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.16 }}
               className="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl"
             >
-              Cross-border import/export and logistics coordination backed by a{" "}
+              Headquartered in <span className="text-navy-950 font-semibold">Istanbul</span>,{" "}
+              <span className="text-navy-950 font-semibold">Euronext Global</span> coordinates{" "}
               <span className="text-navy-950 font-semibold">
-                practical understanding
+                express air cargo, airport &amp; seaport customs clearance,
               </span>{" "}
-              of customs procedures — serving{" "}
-              <span className="text-navy-950 font-semibold">
-                Asia, the Middle East, Europe,
-              </span>{" "}
-              and the Americas.
+              and containerized ocean freight across Europe, the Middle East, Asia, and the Americas.
             </motion.p>
 
-            {/* Interactive 3D Container Unit Selector */}
+            {/* Clickable Mode Switcher: Air Cargo & Airport Customs vs Seaport & FCL/LCL Containers */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.2 }}
+              className="mt-6 w-full max-w-xl"
+            >
+              <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-ping" />
+                Click Transport Mode to Switch Live 3D View
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="tablist" aria-label="Transport Mode">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={heroMode === "air"}
+                  onClick={() => handleSelectMode("air")}
+                  className={`group text-left flex items-start gap-3 p-4 rounded-2xl border transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+                    heroMode === "air"
+                      ? "bg-navy-950 text-white border-navy-900 shadow-xl shadow-navy-950/15 -translate-y-0.5 ring-2 ring-sky-400/50"
+                      : "bg-white text-navy-950 border-slate-200/90 hover:border-sky-400 hover:shadow-md"
+                  }`}
+                >
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      heroMode === "air"
+                        ? "bg-sky-500 text-white shadow-md shadow-sky-500/30"
+                        : "bg-sky-50 text-sky-600 border border-sky-200/60 group-hover:bg-sky-100"
+                    }`}
+                  >
+                    <Plane className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`text-xs font-extrabold ${
+                          heroMode === "air" ? "text-white" : "text-navy-950"
+                        }`}
+                      >
+                        Air Cargo &amp; Airport Customs
+                      </span>
+                      <span
+                        className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full ${
+                          heroMode === "air"
+                            ? "bg-sky-500/25 text-sky-300 border border-sky-400/40"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        {heroMode === "air" ? "Active" : "View Jet"}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-[11px] leading-snug mt-1 ${
+                        heroMode === "air" ? "text-slate-300" : "text-slate-500"
+                      }`}
+                    >
+                      Rapid AWB pre-clearance, IATA ULD thermal pallets &amp; A.TR / EUR.1 filings at major international airports.
+                    </p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={heroMode === "sea"}
+                  onClick={() => handleSelectMode("sea")}
+                  className={`group text-left flex items-start gap-3 p-4 rounded-2xl border transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+                    heroMode === "sea"
+                      ? "bg-navy-950 text-white border-navy-900 shadow-xl shadow-navy-950/15 -translate-y-0.5 ring-2 ring-primary-500/50"
+                      : "bg-white text-navy-950 border-slate-200/90 hover:border-primary-400 hover:shadow-md"
+                  }`}
+                >
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      heroMode === "sea"
+                        ? "bg-primary-500 text-white shadow-md shadow-primary-500/30"
+                        : "bg-primary-50 text-primary-600 border border-primary-200/60 group-hover:bg-primary-100"
+                    }`}
+                  >
+                    <FileCheck2 className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`text-xs font-extrabold ${
+                          heroMode === "sea" ? "text-white" : "text-navy-950"
+                        }`}
+                      >
+                        Seaport &amp; FCL/LCL Containers
+                      </span>
+                      <span
+                        className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full ${
+                          heroMode === "sea"
+                            ? "bg-primary-500/25 text-primary-300 border border-primary-400/40"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        {heroMode === "sea" ? "Active" : "View 3D"}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-[11px] leading-snug mt-1 ${
+                        heroMode === "sea" ? "text-slate-300" : "text-slate-500"
+                      }`}
+                    >
+                      Full Bill of Lading (BL), HS classification &amp; COA/MSDS verification before vessel departure.
+                    </p>
+                  </div>
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Interactive Unit Selector (Adapts to Air ULD Pallets or 3D Sea Containers) */}
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.24 }}
-              className="mt-8 w-full max-w-xl"
+              className="mt-6 w-full max-w-xl"
             >
               <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-widest text-slate-500 mb-2.5">
                 <span className="flex items-center gap-1.5 font-semibold text-navy-800">
                   <Sparkles className="w-3.5 h-3.5 text-primary-500" />
-                  Inspect 3D Cargo Container Stack
+                  {heroMode === "air"
+                    ? "Inspect 3D Air Cargo Pallet & High-Loader"
+                    : "Inspect 3D Cargo Container Stack"}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setIsExploded((prev) => !prev)}
-                  className="text-primary-600 hover:text-primary-700 font-bold flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-full px-3 py-1 bg-white border border-slate-200 shadow-2xs"
-                >
-                  <Layers className="w-3.5 h-3.5" />
-                  {isExploded ? "Lock Stack" : "Explode 3D View"}
-                </button>
+                {heroMode === "sea" ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsExploded((prev) => !prev)}
+                    className="text-primary-600 hover:text-primary-700 font-bold flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-full px-3 py-1 bg-white border border-slate-200 shadow-2xs"
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    {isExploded ? "Lock Stack" : "Explode 3D View"}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsAirLoaderElevated((prev) => !prev)}
+                    className="text-sky-700 hover:text-sky-800 font-bold flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 rounded-full px-3 py-1 bg-white border border-sky-200 shadow-2xs"
+                  >
+                    <Layers className="w-3.5 h-3.5 text-sky-600" />
+                    {isAirLoaderElevated ? "Lower Scissor Lift" : "Elevate into Aircraft"}
+                  </button>
+                )}
               </div>
 
               <div className="grid grid-cols-3 gap-2.5">
-                {INTERACTIVE_CONTAINERS.map((c, idx) => {
-                  const isSelected = activeIdx === idx;
-                  return (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => setActiveIdx(idx)}
-                      className={`group text-left p-3 rounded-2xl border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
-                        isSelected
-                          ? "bg-navy-950 text-white border-navy-900 shadow-lg -translate-y-0.5"
-                          : "bg-white text-navy-950 border-slate-200/90 hover:border-primary-300 hover:shadow-md"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span
-                          className={`font-mono text-[10px] font-bold ${
-                            isSelected ? "text-primary-400" : "text-primary-600"
+                {(heroMode === "air" ? INTERACTIVE_AIR_UNITS : INTERACTIVE_CONTAINERS).map(
+                  (unit, idx) => {
+                    const isSelected = activeIdx === idx;
+                    const badge =
+                      "transportBadge" in unit ? unit.transportBadge : unit.uldType;
+                    const code = "code" in unit ? unit.code : unit.awbCode;
+                    return (
+                      <button
+                        key={unit.id}
+                        type="button"
+                        onClick={() => setActiveIdx(idx)}
+                        className={`group text-left p-3 rounded-2xl border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+                          isSelected
+                            ? "bg-navy-950 text-white border-navy-900 shadow-lg -translate-y-0.5"
+                            : "bg-white text-navy-950 border-slate-200/90 hover:border-primary-300 hover:shadow-md"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span
+                            className={`font-mono text-[9px] font-bold truncate ${
+                              isSelected ? "text-primary-400" : "text-primary-600"
+                            }`}
+                          >
+                            {badge}
+                          </span>
+                          <span
+                            className={`w-2 h-2 rounded-full flex-shrink-0 transition-colors ${
+                              isSelected
+                                ? "bg-emerald-400 animate-pulse"
+                                : "bg-slate-300"
+                            }`}
+                          />
+                        </div>
+                        <div
+                          className={`text-xs font-extrabold truncate ${
+                            isSelected ? "text-white" : "text-navy-950"
                           }`}
                         >
-                          BAY 0{idx + 1}
-                        </span>
-                        <span
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            isSelected
-                              ? "bg-emerald-400 animate-pulse"
-                              : "bg-slate-300"
+                          {unit.mode}
+                        </div>
+                        <div
+                          className={`text-[10px] font-mono truncate mt-0.5 ${
+                            isSelected ? "text-slate-300" : "text-slate-500"
                           }`}
-                        />
-                      </div>
-                      <div
-                        className={`text-xs font-extrabold truncate ${
-                          isSelected ? "text-white" : "text-navy-950"
-                        }`}
-                      >
-                        {c.mode}
-                      </div>
-                      <div
-                        className={`text-[10px] font-mono truncate mt-0.5 ${
-                          isSelected ? "text-slate-300" : "text-slate-500"
-                        }`}
-                      >
-                        {c.code}
-                      </div>
-                    </button>
-                  );
-                })}
+                        >
+                          {code}
+                        </div>
+                      </button>
+                    );
+                  }
+                )}
               </div>
             </motion.div>
 
@@ -362,7 +599,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.32 }}
-              className="mt-9 flex flex-wrap items-center gap-4"
+              className="mt-8 flex flex-wrap items-center gap-4"
             >
               <Link
                 href="/contact#enquiry"
@@ -395,13 +632,13 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.42 }}
-              className="mt-11 pt-6 border-t border-slate-200/80 flex flex-wrap gap-x-6 gap-y-2.5"
+              className="mt-9 pt-5 border-t border-slate-200/80 flex flex-wrap gap-x-6 gap-y-2.5"
             >
               {[
-                "Incoterms 2020 Alignment",
-                "Destination Documentation",
-                "Regulated & General Cargo",
-                "Cold-Chain Coordination",
+                "Airport & Seaport Customs Clearance",
+                "IATA Air Cargo & Ocean FCL/LCL",
+                "Incoterms 2020 & A.TR / EUR.1",
+                "GDP Cold-Chain Coordination",
               ].map((item) => (
                 <span
                   key={item}
@@ -414,276 +651,969 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT COLUMN: Open-Air Watertight 3D ISO Cargo Container Stack & Telemetry */}
+          {/* RIGHT COLUMN: Switches between Boeing 777F Air Cargo Plane SVG ("air") and 3D Cargo Container Stack ("sea") */}
           <motion.div
             style={{ y: rightColY }}
             className="lg:col-span-6 relative flex flex-col items-center"
           >
-            {/* Open 3D Interactive Stage (No white background card) */}
-            <div
-              onMouseMove={handlePointerMove}
-              onMouseLeave={handlePointerLeave}
-              className="relative w-full h-[460px] sm:h-[510px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible"
-              style={{ perspective: "1500px" }}
-              aria-label="Interactive 3D ISO Cargo Container Stack"
-            >
-              {/* Ambient Glow & Ground Shadow Directly on the Hero Canvas */}
-              <div className="absolute w-96 h-96 rounded-full bg-primary-500/10 blur-3xl pointer-events-none" />
-              <div
-                className="absolute bottom-8 w-80 sm:w-96 h-14 rounded-full bg-navy-950/20 blur-2xl pointer-events-none"
-                style={{ transform: "rotateX(75deg)" }}
-              />
+            {/* Top Mode Indicator & Interaction Hint */}
+            <div className="relative w-full mb-2 flex items-center justify-between gap-2 px-1 z-30">
+              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md border border-slate-200/90 rounded-full px-3.5 py-1.5 shadow-xs">
+                {heroMode === "air" ? (
+                  <>
+                    <Plane className="w-3.5 h-3.5 text-sky-600" />
+                    <span className="text-[11px] font-mono font-bold text-navy-950 uppercase">
+                      AIR CARGO &amp; AIRPORT CUSTOMS VIEW
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Box className="w-3.5 h-3.5 text-primary-500" />
+                    <span className="text-[11px] font-mono font-bold text-navy-950 uppercase">
+                      SEAPORT &amp; 3D CONTAINER STACK VIEW
+                    </span>
+                  </>
+                )}
+              </div>
 
-              {/* Floating Rotate Hint Pill */}
-              <div className="absolute top-0 right-0 flex items-center justify-end pointer-events-none z-20">
-                <span className="text-[10px] font-mono text-slate-600 bg-white/80 backdrop-blur-md border border-slate-200/80 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+              <div className="hidden sm:flex items-center justify-end pointer-events-none">
+                <span className="text-[10px] font-mono text-slate-600 bg-white/85 backdrop-blur-md border border-slate-200/80 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
                   <Compass
                     className="w-3 h-3 text-primary-500 animate-spin"
                     style={{ animationDuration: "10s" }}
                   />
-                  Move Cursor to Rotate 3D
+                  {heroMode === "air" ? "Move Cursor to Bank Aircraft" : "Move Cursor to Rotate 3D"}
                 </span>
               </div>
+            </div>
 
-              {/* ── 3D ROTATABLE ASSEMBLY (Large 368x104x132 Watertight Geometry) ── */}
-              <motion.div
-                style={{
-                  rotateX,
-                  rotateY,
-                  transformStyle: "preserve-3d",
-                }}
-                className="relative flex items-center justify-center scale-[0.82] sm:scale-100 md:scale-105"
-              >
-                {INTERACTIVE_CONTAINERS.map((container, idx) => {
-                  const isActive = activeIdx === idx;
-                  // idx 0 = top container, idx 1 = middle, idx 2 = bottom
-                  const verticalGap = isExploded ? BOX_H + 34 : BOX_H + 5;
-                  const yPos = (idx - 1) * verticalGap;
-                  // Pull selected container slightly forward along Z so user can inspect it clearly
-                  const zSlide = isActive ? 28 : 0;
+            {/* Open 3D Interactive Stage (Switches between Plane SVG and 3D Containers) */}
+            <div
+              onMouseMove={handlePointerMove}
+              onMouseLeave={handlePointerLeave}
+              className="relative w-full h-[420px] sm:h-[460px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible"
+              style={{ perspective: "1500px" }}
+              aria-label={
+                heroMode === "air"
+                  ? "Interactive Boeing 777F Air Cargo Freighter"
+                  : "Interactive 3D ISO Cargo Container Stack"
+              }
+            >
+              {/* Ambient Glow & Ground Shadow Directly on the Hero Canvas */}
+              <div
+                className={`absolute w-96 h-96 rounded-full blur-3xl pointer-events-none transition-colors duration-500 ${
+                  heroMode === "air" ? "bg-sky-500/12" : "bg-primary-500/10"
+                }`}
+              />
+              <div
+                className="absolute bottom-6 w-80 sm:w-96 h-14 rounded-full bg-navy-950/20 blur-2xl pointer-events-none"
+                style={{ transform: "rotateX(75deg)" }}
+              />
 
-                  return (
+              <AnimatePresence mode="wait">
+                {heroMode === "air" ? (
+                  /* ── 1. AIR CARGO MODE: WIDE BOEING 777F FUSELAGE, INDUSTRIAL HYDRAULIC HIGH-LOADER & TARMAC STAGING STACK ── */
+                  <motion.div
+                    key="hero-air-stage"
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    style={{
+                      rotateX,
+                      rotateY,
+                      transformStyle: "preserve-3d",
+                    }}
+                    className="relative flex items-center justify-center w-full h-full scale-[0.72] sm:scale-90 md:scale-95"
+                  >
+                    {/* ── A. WIDER 3D AIRCRAFT FUSELAGE SECTION (BOTH NOSE-LEFT & TAIL-RIGHT SIDES) ── */}
+                    <div
+                      style={{
+                        width: "520px",
+                        height: "190px",
+                        transform: "translate3d(-10px, -98px, -64px)",
+                        transformStyle: "preserve-3d",
+                      }}
+                      className="absolute rounded-t-[82px] rounded-b-2xl bg-gradient-to-b from-[#FFFFFF] via-[#F8FAFC] to-[#CBD5E1] border border-slate-300/90 shadow-[0_30px_60px_rgba(15,23,42,0.28)] overflow-visible"
+                    >
+                      {/* Realistic Aircraft Skin Panel Rivet Grid & Vertical Frame Seams */}
+                      <div
+                        className="absolute inset-0 rounded-t-[82px] rounded-b-2xl opacity-30 pointer-events-none"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(to right, rgba(100,116,139,0.28) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,116,139,0.18) 1px, transparent 1px)",
+                          backgroundSize: "48px 36px",
+                        }}
+                      />
+
+                      {/* Left Forward Fuselage Section ("ER" Livery + Crew Entry Door + Forward Taper) */}
+                      <div className="absolute left-4 top-10 flex items-center gap-3 select-none">
+                        <span className="text-2xl font-black tracking-tighter text-navy-950/90">
+                          ER
+                        </span>
+                        {/* Forward Crew Door */}
+                        <div className="w-7 h-14 rounded-md bg-gradient-to-b from-slate-100 to-slate-300 border border-slate-400 p-1 flex flex-col justify-between shadow-2xs">
+                          <div className="w-3 h-3 rounded-xs bg-navy-950 mx-auto" />
+                          <div className="w-full h-1 bg-amber-500 rounded-xs" />
+                        </div>
+                      </div>
+
+                      {/* Lower Aircraft Blue/Navy & Orange Livery Belly Fairing */}
+                      <div className="absolute inset-x-0 bottom-0 h-14 rounded-b-2xl bg-gradient-to-r from-[#0284C7] via-[#0369A1] to-[#0F2542] border-t-[3px] border-primary-500 flex items-center justify-between px-6 shadow-inner">
+                        <div className="flex items-center gap-3">
+                          <span className="font-mono text-[9px] font-black tracking-widest text-white/95">
+                            BOEING 777-200LRF · MAIN DECK
+                          </span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          <span className="font-mono text-[8px] text-sky-200">
+                            DOOR 4L OPEN
+                          </span>
+                        </div>
+                        <span className="font-mono text-[9px] font-bold text-sky-200">
+                          REG: TC-ENX · ISTANBUL
+                        </span>
+                      </div>
+
+                      {/* Right Aft Fuselage Section (Full Livery Title + Swept Wing Root + Vertical Tail Fin) */}
+                      <div className="absolute right-8 top-9 text-right select-none">
+                        <div className="text-xl font-black tracking-[0.18em] text-navy-950 leading-none">
+                          EURONEXT <span className="text-primary-500">CARGO</span>
+                        </div>
+                        <div className="text-[9px] font-mono font-bold tracking-[0.22em] text-slate-500 mt-1">
+                          AIRPORT CUSTOMS EXPRESS · AWB
+                        </div>
+                        {/* Plugged Upper Deck Windows & Inspection Ports */}
+                        <div className="mt-3 flex items-center justify-end gap-2.5">
+                          {[0, 1, 2, 3, 4, 5].map((p) => (
+                            <span
+                              key={p}
+                              className="w-2.5 h-3.5 rounded-full bg-slate-200/90 border border-slate-400/80 shadow-inner"
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Swept Aft Vertical Tail Fin Rising on Far Right Edge */}
+                      <div
+                        style={{
+                          transform: "translate3d(455px, -68px, -18px)",
+                        }}
+                        className="absolute w-20 h-24 pointer-events-none"
+                      >
+                        <div
+                          className="w-full h-full bg-gradient-to-br from-[#0284C7] via-[#0369A1] to-[#0F2542] border border-white/40 shadow-lg flex items-center justify-center"
+                          style={{
+                            clipPath: "polygon(55% 0%, 100% 0%, 75% 100%, 0% 100%)",
+                          }}
+                        >
+                          <div className="w-5 h-5 border border-white/70 rotate-45 flex items-center justify-center">
+                            <div className="w-2 h-2 bg-primary-500" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Swept Main Wing Root & Pylon Extending From Fuselage */}
+                      <div
+                        style={{
+                          transform: "translate3d(315px, 118px, 10px)",
+                        }}
+                        className="absolute w-52 h-6 bg-gradient-to-r from-slate-300 via-slate-200 to-slate-400 border border-slate-500 shadow-md -skew-x-12"
+                      />
+
+                      {/* 3D High-Bypass GE90 Jet Engine Cowling & Dark Intake Under Wing */}
+                      <div
+                        style={{
+                          transform: "translate3d(318px, 116px, 26px)",
+                        }}
+                        className="absolute w-36 h-20 rounded-l-2xl rounded-r-full bg-gradient-to-b from-[#38BDF8] via-[#0284C7] to-[#0369A1] border-2 border-slate-200 shadow-[0_18px_30px_rgba(15,23,42,0.35)] flex items-center justify-between pl-3 pr-1.5"
+                      >
+                        {/* Dark Titanium Fan Intake Ring */}
+                        <div className="w-4 h-15 rounded-full bg-[#091322] border-2 border-slate-300 flex items-center justify-center">
+                          <div className="w-1.5 h-2.5 rounded-full bg-white" />
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <div className="w-6 h-6 rounded-md border border-white/60 bg-white/15 flex items-center justify-center text-[10px] font-black text-white">
+                            ✦
+                          </div>
+                          <span className="font-mono text-[7px] font-bold text-sky-100 mt-0.5">
+                            GE90-115B
+                          </span>
+                        </div>
+                        {/* Metallic Exhaust Nozzle Cone */}
+                        <div className="w-6 h-12 rounded-r-full bg-gradient-to-b from-slate-500 via-slate-300 to-slate-700 border-l border-slate-800" />
+                      </div>
+
+                      {/* ── DARK ILLUMINATED MAIN-DECK CARGO HOLD BAY & OPEN DOOR (Left-Center) ── */}
+                      <div
+                        style={{ transformStyle: "preserve-3d" }}
+                        className="absolute left-24 top-4 w-48 h-32 rounded-t-2xl bg-gradient-to-b from-[#060C17] via-[#0F1E36] to-[#1E293B] border-2 border-slate-600 shadow-inner overflow-visible flex flex-col justify-between p-2.5"
+                      >
+                        {/* Interior Curved Fuselage Rib Frames */}
+                        <div
+                          className="absolute inset-0 opacity-25 pointer-events-none"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(148,163,184,0.45) 18px, rgba(148,163,184,0.45) 20px)",
+                          }}
+                        />
+
+                        {/* Ceiling Cargo Bay LED Spotlights */}
+                        <div className="relative z-10 flex items-center justify-around">
+                          {[0, 1, 2, 3, 4].map((light) => (
+                            <span
+                              key={light}
+                              className="w-2.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_10px_#fde68a]"
+                            />
+                          ))}
+                        </div>
+
+                        {/* Twin Hydraulic Door Actuator Struts on Left & Right Jambs */}
+                        <div className="absolute -top-6 left-2 w-1.5 h-16 bg-gradient-to-b from-slate-300 via-white to-slate-500 border border-slate-700 origin-bottom -rotate-12 z-20" />
+                        <div className="absolute -top-6 right-2 w-1.5 h-16 bg-gradient-to-b from-slate-300 via-white to-slate-500 border border-slate-700 origin-bottom rotate-12 z-20" />
+
+                        {/* Interior Cargo Hold Roller Sill & Bay Markings */}
+                        <div className="relative z-10 flex items-center justify-between border-t border-white/20 pt-1.5">
+                          <span className="font-mono text-[8px] font-bold text-emerald-400">
+                            BAY 4L · LOCKED
+                          </span>
+                          <span className="font-mono text-[8px] text-sky-300">
+                            BALL-MAT ACTIVE
+                          </span>
+                        </div>
+
+                        {/* ── 3D UPWARD-HINGED OPEN AIRCRAFT CARGO DOOR CANOPY ── */}
+                        <motion.div
+                          animate={{
+                            rotateX: isAirLoaderElevated ? 68 : 56,
+                          }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          style={{
+                            transformOrigin: "top center",
+                            transformStyle: "preserve-3d",
+                          }}
+                          className="absolute -top-1 left-0 right-0 h-26 rounded-t-2xl bg-gradient-to-b from-slate-200 via-white to-slate-300 border-2 border-slate-500 shadow-2xl p-2 flex flex-col justify-between"
+                        >
+                          <div className="grid grid-cols-4 gap-1.5 h-full">
+                            {[0, 1, 2, 3].map((rib) => (
+                              <div
+                                key={rib}
+                                className="border border-slate-400/70 bg-slate-200/80 rounded-xs flex items-end justify-center pb-1 shadow-inner"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#f59e0b]" />
+                              </div>
+                            ))}
+                          </div>
+                          <div className="h-1.5 w-full bg-amber-500 rounded-xs border-t border-slate-600" />
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* ── B. 3D INDUSTRIAL OPERATOR BRIDGE, MAST RAILS & CONTROL CONSOLE (Left) ── */}
+                    <div
+                      style={{
+                        transform: "translate3d(-128px, -10px, 34px)",
+                        transformStyle: "preserve-3d",
+                      }}
+                      className="absolute w-28 h-36 pointer-events-none"
+                    >
+                      {/* Twin Vertical Black/Steel Guide Mast Columns with Chain Track */}
+                      <div className="absolute -bottom-8 left-1 w-3.5 h-38 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 border border-amber-500/60 rounded-t-xs flex flex-col justify-between p-0.5">
+                        <div
+                          className="w-full h-full opacity-60"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(0deg, #94A3B8 0px, #94A3B8 2px, transparent 2px, transparent 5px)",
+                          }}
+                        />
+                      </div>
+                      <div className="absolute -bottom-8 right-1 w-3.5 h-38 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 border border-amber-500/60 rounded-t-xs flex flex-col justify-between p-0.5">
+                        <div
+                          className="w-full h-full opacity-60"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(0deg, #94A3B8 0px, #94A3B8 2px, transparent 2px, transparent 5px)",
+                          }}
+                        />
+                      </div>
+
+                      {/* Upper Bridge Deck Platform & Safety Guardrails */}
+                      <div className="relative z-10 w-full h-16 border-2 border-[#D97706] bg-slate-900/20 backdrop-blur-[1px] rounded-t-md flex items-end justify-between px-2.5 pb-1.5">
+                        {/* Hydraulic Joystick Control Pulpit */}
+                        <div className="w-9 h-9 bg-gradient-to-b from-slate-700 to-slate-900 border border-slate-400 rounded-xs flex flex-col items-center justify-center gap-1 shadow-md">
+                          <div className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                          </div>
+                          <div className="w-5 h-1 bg-amber-400 rounded-xs" />
+                        </div>
+                        <span className="font-mono text-[7px] font-black text-white bg-slate-900 border border-amber-400/60 px-1.5 py-0.5 rounded">
+                          BRIDGE DECK
+                        </span>
+                      </div>
+
+                      {/* Heavy Industrial Yellow Bridge Girder */}
+                      <div className="relative z-10 w-full h-4.5 bg-gradient-to-b from-[#F59E0B] via-[#D97706] to-[#B45309] border border-slate-900/60 shadow-lg flex items-center justify-between px-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-900" />
+                        <span className="font-mono text-[6px] font-black text-slate-950 tracking-widest">
+                          SWL 7,000 KG
+                        </span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-900" />
+                      </div>
+
+                      {/* Steel Access Ladder with Rungs */}
+                      <div className="relative z-10 ml-auto mr-3 w-4.5 h-16 border-x-2 border-[#D97706] bg-slate-950/20 flex flex-col justify-evenly">
+                        {[0, 1, 2, 3, 4].map((rung) => (
+                          <div key={rung} className="h-0.5 w-full bg-[#F59E0B]" />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ── C. 3D NETTED AIR CARGO PALLET ON THE HIGH-LOADER ─────────── */}
                     <motion.div
-                      key={container.id}
-                      onClick={() => setActiveIdx(idx)}
+                      onClick={() => setIsAirLoaderElevated((prev) => !prev)}
                       animate={{
-                        y: yPos,
-                        z: zSlide,
+                        y: isAirLoaderElevated ? -38 : 2,
+                        x: isAirLoaderElevated ? -18 : 16,
+                        z: isAirLoaderElevated ? 14 : 42,
                       }}
                       transition={{
                         type: "spring",
-                        stiffness: 210,
-                        damping: 22,
+                        stiffness: 160,
+                        damping: 20,
                       }}
                       style={{
-                        width: `${BOX_W}px`,
-                        height: `${BOX_H}px`,
+                        width: `${ULD_W}px`,
+                        height: `${ULD_H}px`,
                         transformStyle: "preserve-3d",
                       }}
-                      className="absolute cursor-pointer"
+                      className="absolute cursor-pointer group"
+                      title="Click to Elevate / Lower Hydraulic High-Loader"
                     >
-                      {/* 1. FRONT LONG SIDE WALL (368 x 104, at Z = +66px) */}
+                      {/* 1. ULD FRONT FACE (Multi-Box Stacked Cartons + Shrink Wrap + Crisscross Net) */}
                       <div
                         style={{
-                          width: `${BOX_W}px`,
-                          height: `${BOX_H}px`,
-                          background: container.sideWallBg,
-                          transform: `translateZ(${BOX_D / 2}px)`,
-                          color: container.textColor,
+                          width: `${ULD_W}px`,
+                          height: `${ULD_H}px`,
+                          background: activeAirUnit.crateWallBg,
+                          transform: `translateZ(${ULD_D / 2}px)`,
                         }}
-                        className={`absolute inset-0 border ${
-                          isActive
-                            ? "border-primary-500 ring-2 ring-primary-500/40"
-                            : "border-slate-400/50"
-                        } overflow-hidden flex flex-col justify-between p-3.5 shadow-inner`}
+                        className="absolute inset-0 rounded-t-md border-2 border-slate-500/80 overflow-hidden flex flex-col justify-between p-2.5 shadow-inner"
                       >
-                        {/* Top & Bottom Structural Steel Rails */}
-                        <div className="absolute inset-x-0 top-0 h-2.5 bg-black/15 border-b border-white/20" />
-                        <div className="absolute inset-x-0 bottom-0 h-3 bg-black/25 border-t border-black/20 flex items-center justify-around px-10">
-                          {/* Forklift Pockets */}
-                          <div className="w-9 h-1.5 bg-black/65 rounded-xs" />
-                          <div className="w-9 h-1.5 bg-black/65 rounded-xs" />
-                        </div>
-
-                        {/* Deep 3D Corrugated Side Panels */}
+                        {/* Realistic Stacked Corrugated Cardboard / Crate Grid Seams & Shipping Labels */}
                         <div
-                          className="absolute inset-x-3.5 inset-y-2.5 pointer-events-none"
+                          className="absolute inset-0 opacity-45 pointer-events-none"
                           style={{
-                            backgroundImage: `repeating-linear-gradient(90deg, ${container.ribShadow} 0px, ${container.ribShadow} 7px, rgba(255,255,255,0.22) 7px, rgba(255,255,255,0.22) 13px, transparent 13px, transparent 19px)`,
+                            backgroundImage:
+                              "linear-gradient(to right, rgba(15,23,42,0.42) 2px, transparent 2px), linear-gradient(to bottom, rgba(15,23,42,0.38) 2px, transparent 2px)",
+                            backgroundSize: "52px 28px",
                           }}
                         />
 
-                        {/* 4 ISO Corner Castings with Twist-Lock Holes */}
-                        {[
-                          "top-0 left-0",
-                          "top-0 right-0",
-                          "bottom-0 left-0",
-                          "bottom-0 right-0",
-                        ].map((pos) => (
-                          <div
-                            key={pos}
-                            className={`absolute ${pos} w-4 h-4 bg-slate-800 border border-slate-400 flex items-center justify-center z-20`}
+                        {/* Translucent Polyethylene Weather Shrink-Wrap Sheet */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/15 via-white/40 to-slate-100/20 pointer-events-none" />
+
+                        {/* 3D Crisscross Diamond Webbing Net Overlay */}
+                        <div
+                          className="absolute inset-0 pointer-events-none"
+                          style={{
+                            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.86) 10px, rgba(255,255,255,0.86) 12px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.86) 10px, rgba(255,255,255,0.86) 12px)`,
+                          }}
+                        />
+
+                        {/* Heavy Vertical Yellow/Blue Tension Ratchet Straps */}
+                        <div
+                          style={{ backgroundColor: activeAirUnit.strapColor }}
+                          className="absolute inset-y-0 left-1/4 w-1.5 opacity-95 shadow-xs"
+                        />
+                        <div
+                          style={{ backgroundColor: activeAirUnit.strapColor }}
+                          className="absolute inset-y-0 left-2/4 w-1.5 opacity-95 shadow-xs"
+                        />
+                        <div
+                          style={{ backgroundColor: activeAirUnit.strapColor }}
+                          className="absolute inset-y-0 left-3/4 w-1.5 opacity-95 shadow-xs"
+                        />
+
+                        {/* Top AWB & IATA Tag */}
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="font-mono text-[10px] font-black bg-navy-950/90 text-white px-2 py-0.5 rounded border border-white/25 shadow-sm">
+                            {activeAirUnit.awbCode}
+                          </span>
+                          <span
+                            style={{ backgroundColor: activeAirUnit.badgeColor }}
+                            className="font-mono text-[8px] font-black text-white px-1.5 py-0.5 rounded uppercase shadow-sm"
                           >
-                            <div className="w-1.5 h-1 rounded-full bg-black" />
+                            {activeAirUnit.uldType.split(" ")[0]}
+                          </span>
+                        </div>
+
+                        {/* Bottom Aluminum ULD Edge Rail with Seat-Track Net Locks */}
+                        <div className="relative z-10 -mx-2.5 -mb-2.5 h-4 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-500 border-t-2 border-slate-700 flex items-center justify-around px-2">
+                          {[0, 1, 2, 3, 4, 5, 6].map((hook) => (
+                            <span
+                              key={hook}
+                              className="w-2.5 h-1.5 bg-[#D97706] border border-slate-900 rounded-xs"
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 2. ULD BACK FACE */}
+                      <div
+                        style={{
+                          width: `${ULD_W}px`,
+                          height: `${ULD_H}px`,
+                          background: activeAirUnit.crateSideBg,
+                          transform: `rotateY(180deg) translateZ(${ULD_D / 2}px)`,
+                        }}
+                        className="absolute inset-0 border border-slate-600"
+                      />
+
+                      {/* 3. ULD TOP ROOF FACE */}
+                      <div
+                        style={{
+                          width: `${ULD_W}px`,
+                          height: `${ULD_D}px`,
+                          top: `${(ULD_H - ULD_D) / 2}px`,
+                          left: 0,
+                          background: activeAirUnit.crateTopBg,
+                          transform: `rotateX(90deg) translateZ(${ULD_H / 2}px)`,
+                        }}
+                        className="absolute border border-slate-500 overflow-hidden flex items-center justify-between px-4"
+                      >
+                        <div
+                          className="absolute inset-0 pointer-events-none"
+                          style={{
+                            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.75) 10px, rgba(255,255,255,0.75) 12px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.75) 10px, rgba(255,255,255,0.75) 12px)`,
+                          }}
+                        />
+                        <span className="relative z-10 font-mono text-[9px] font-black bg-navy-950/90 text-white px-2 py-0.5 rounded">
+                          EURONEXT AIR ULD
+                        </span>
+                        <span className="relative z-10 font-mono text-[8px] font-bold bg-white/95 text-navy-950 px-1.5 py-0.5 rounded">
+                          NET LOCKED
+                        </span>
+                      </div>
+
+                      {/* 4. ULD BOTTOM PALLET BASE */}
+                      <div
+                        style={{
+                          width: `${ULD_W}px`,
+                          height: `${ULD_D}px`,
+                          top: `${(ULD_H - ULD_D) / 2}px`,
+                          left: 0,
+                          background: "#1E293B",
+                          transform: `rotateX(-90deg) translateZ(${ULD_H / 2}px)`,
+                        }}
+                        className="absolute shadow-xl"
+                      />
+
+                      {/* 5. ULD RIGHT SIDE FACE */}
+                      <div
+                        style={{
+                          width: `${ULD_D}px`,
+                          height: `${ULD_H}px`,
+                          top: 0,
+                          left: `${(ULD_W - ULD_D) / 2}px`,
+                          background: activeAirUnit.crateSideBg,
+                          transform: `rotateY(90deg) translateZ(${ULD_W / 2}px)`,
+                        }}
+                        className="absolute border border-slate-500 overflow-hidden p-2 flex flex-col justify-between"
+                      >
+                        <div
+                          className="absolute inset-0 pointer-events-none"
+                          style={{
+                            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.7) 10px, rgba(255,255,255,0.7) 12px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.7) 10px, rgba(255,255,255,0.7) 12px)`,
+                          }}
+                        />
+                        <span className="relative z-10 font-mono text-[8px] font-black bg-black/65 text-white px-1.5 py-0.5 rounded text-center">
+                          IATA PMC
+                        </span>
+                        <div className="relative z-10 h-3 -mx-2 -mb-2 bg-slate-300 border-t border-slate-600" />
+                      </div>
+
+                      {/* 6. ULD LEFT SIDE FACE */}
+                      <div
+                        style={{
+                          width: `${ULD_D}px`,
+                          height: `${ULD_H}px`,
+                          top: 0,
+                          left: `${(ULD_W - ULD_D) / 2}px`,
+                          background: activeAirUnit.crateSideBg,
+                          transform: `rotateY(-90deg) translateZ(${ULD_W / 2}px)`,
+                        }}
+                        className="absolute border border-slate-600"
+                      />
+                    </motion.div>
+
+                    {/* ── D. INDUSTRIAL HYDRAULIC SCISSOR HIGH-LOADER (PISTONS, PIVOT PINS, ROLLER BED & OUTRIGGERS) ── */}
+                    <div
+                      style={{
+                        transform: "translate3d(4px, 84px, 38px)",
+                        transformStyle: "preserve-3d",
+                      }}
+                      className="absolute flex flex-col items-center pointer-events-none"
+                    >
+                      {/* 1. Upper Elevating Roller-Conveyor Bed with Galvanized Steel Guardrails */}
+                      <motion.div
+                        animate={{
+                          y: isAirLoaderElevated ? -42 : 0,
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 160,
+                          damping: 20,
+                        }}
+                        style={{ transformStyle: "preserve-3d" }}
+                        className="relative w-76 h-6 bg-gradient-to-b from-[#F59E0B] via-[#D97706] to-[#92400E] border-2 border-slate-900/75 rounded-xs shadow-[0_10px_25px_rgba(0,0,0,0.45)] flex items-center justify-between px-2.5"
+                      >
+                        {/* Red Side-Guide Channel & Galvanized Steel Conveyor Rollers */}
+                        <div className="absolute -top-2.5 inset-x-2 h-2.5 bg-gradient-to-r from-red-700 via-red-600 to-red-700 border border-slate-900 flex items-center justify-around px-1">
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((r) => (
+                            <span
+                              key={r}
+                              className="w-2.5 h-1.5 rounded-xs bg-gradient-to-b from-white via-slate-300 to-slate-500 border border-slate-700"
+                            />
+                          ))}
+                        </div>
+
+                        {/* Front Galvanized Steel Bumper Tube & Pallet Stops */}
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-3 bg-amber-300 border border-slate-900 rounded-2xs" />
+                          <span className="font-mono text-[8px] font-black text-slate-950 tracking-wider">
+                            TLD / TREPEL CHAMP 140 · SWL 14,000 KG
+                          </span>
+                        </div>
+                        <span className="font-mono text-[7.5px] font-black bg-slate-950 text-amber-400 px-1.5 py-0.5 rounded border border-amber-400/40">
+                          {isAirLoaderElevated ? "MAIN DECK LEVEL" : "TRANSFER LEVEL"}
+                        </span>
+                      </motion.div>
+
+                      {/* 2. Heavy-Duty Dual Scissor Arms + Chrome Hydraulic Ram Cylinders + Pivot Pins */}
+                      <div className="relative w-68 h-20 flex items-center justify-around overflow-visible">
+                        {[0, 1].map((scissorIdx) => (
+                          <div
+                            key={scissorIdx}
+                            className="relative w-28 h-full flex items-center justify-center"
+                          >
+                            {/* Outer Structural Box-Beam Arm 1 */}
+                            <motion.div
+                              animate={{
+                                rotateZ: isAirLoaderElevated ? 38 : 17,
+                                y: isAirLoaderElevated ? -18 : 0,
+                              }}
+                              className="absolute w-32 h-3.5 bg-gradient-to-b from-[#F59E0B] via-[#D97706] to-[#78350F] border border-slate-900 rounded-xs shadow-lg flex items-center justify-between px-1.5"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-400" />
+                              <div className="h-0.5 flex-1 mx-1 bg-slate-900/40" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-400" />
+                            </motion.div>
+
+                            {/* Inner Structural Box-Beam Arm 2 */}
+                            <motion.div
+                              animate={{
+                                rotateZ: isAirLoaderElevated ? -38 : -17,
+                                y: isAirLoaderElevated ? -18 : 0,
+                              }}
+                              className="absolute w-32 h-3.5 bg-gradient-to-b from-[#FBBF24] via-[#D97706] to-[#92400E] border border-slate-900 rounded-xs shadow-lg flex items-center justify-between px-1.5"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-400" />
+                              <div className="h-0.5 flex-1 mx-1 bg-slate-900/40" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-400" />
+                            </motion.div>
+
+                            {/* Diagonal Hydraulic Ram Cylinder Barrel + Extending Chrome Piston Rod */}
+                            <motion.div
+                              animate={{
+                                rotateZ: isAirLoaderElevated ? -52 : -26,
+                                y: isAirLoaderElevated ? -16 : 2,
+                              }}
+                              className="absolute w-24 h-2.5 flex items-center z-10"
+                            >
+                              {/* Dark Steel Hydraulic Cylinder Barrel */}
+                              <div className="w-14 h-2.5 bg-gradient-to-b from-slate-700 via-slate-900 to-black border border-slate-500 rounded-l-xs" />
+                              {/* Polished Chrome Piston Rod */}
+                              <div className="w-10 h-1.5 bg-gradient-to-b from-white via-slate-200 to-slate-400 border-y border-r border-slate-600" />
+                            </motion.div>
+
+                            {/* Center Heavy Machined Steel Pivot Bearing Pin */}
+                            <motion.div
+                              animate={{
+                                y: isAirLoaderElevated ? -18 : 0,
+                              }}
+                              className="relative z-20 w-4 h-4 rounded-full bg-gradient-to-br from-slate-200 to-slate-600 border-2 border-slate-900 shadow-md flex items-center justify-center"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-900" />
+                            </motion.div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* 3. Lower Industrial Ground Chassis Frame, Outrigger Stabilizer Jacks & Heavy Hubs */}
+                      <div className="relative w-84 h-8 bg-gradient-to-b from-[#F59E0B] via-[#D97706] to-[#92400E] border-2 border-slate-900/85 rounded-xs shadow-[0_20px_35px_rgba(15,23,42,0.45)] flex items-center justify-between px-3">
+                        {/* Grey Electrical / Hydraulic Pump Cabinet Box on Left Rear */}
+                        <div className="absolute -top-6 -left-3 w-8 h-6 bg-gradient-to-b from-slate-300 to-slate-400 border border-slate-700 rounded-xs flex flex-col justify-between p-0.5 shadow-md">
+                          <div className="w-full h-1 bg-red-600" />
+                          <div className="text-[5px] font-mono font-bold text-slate-800 text-center">
+                            HYD
+                          </div>
+                        </div>
+
+                        {/* Diagonal Black/Amber Industrial Caution Striping */}
+                        <div
+                          className="w-32 h-3.5 border border-slate-900/80 shadow-inner"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(-45deg, #090D16, #090D16 5px, #F59E0B 5px, #F59E0B 10px)",
+                          }}
+                        />
+
+                        <div className="flex items-center gap-2">
+                          {/* Red & Amber Reflector Lenses */}
+                          <span className="w-3 h-1.5 bg-red-600 border border-black/50 rounded-2xs" />
+                          <span className="font-mono text-[8px] font-black text-slate-950 tracking-wider">
+                            GSE K-LOADER #04 · IST
+                          </span>
+                          <span className="w-3 h-1.5 bg-amber-300 border border-black/50 rounded-2xs" />
+                        </div>
+
+                        {/* 4 Heavy Solid-Rubber Tarmac Bogie Wheels with Steel Rim Bolts */}
+                        {["left-8", "left-20", "right-20", "right-8"].map((wPos) => (
+                          <div
+                            key={wPos}
+                            className={`absolute -bottom-3 ${wPos} w-6 h-6 rounded-full bg-gradient-to-b from-slate-800 to-black border-2 border-slate-600 shadow-md flex items-center justify-center`}
+                          >
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-500 border border-slate-900" />
                           </div>
                         ))}
 
-                        {/* Reefer Cooling Machinery Grille (for Pharma Reefer unit) */}
-                        {container.isReefer && (
-                          <div className="relative z-10 flex items-center justify-between pl-2 pr-1">
-                            <div className="flex items-center gap-1.5 bg-sky-950 text-white px-2.5 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-400/40">
-                              <ThermometerSnowflake className="w-3 h-3 text-sky-400" />
-                              THERMO-KING +2.4°C
+                        {/* Deployed Hydraulic Ground Stabilizer Outrigger Jacks (Left, Center, Right) */}
+                        {["left-2", "left-1/2 -translate-x-1/2", "right-2"].map(
+                          (jackPos, jIdx) => (
+                            <div
+                              key={jIdx}
+                              className={`absolute -bottom-3.5 ${jackPos} flex flex-col items-center`}
+                            >
+                              <div className="w-2 h-3 bg-gradient-to-r from-slate-300 via-white to-slate-400 border border-slate-800" />
+                              <div className="w-4 h-1 bg-slate-900 rounded-xs" />
                             </div>
-                            <span className="font-mono text-xs font-black tracking-wider bg-slate-900 text-white px-2.5 py-0.5 rounded">
-                              {container.code}
-                            </span>
-                          </div>
+                          )
                         )}
+                      </div>
+                    </div>
 
-                        {!container.isReefer && (
-                          <div className="relative z-10 flex items-center justify-between px-2">
-                            <span className="font-mono text-xs font-black tracking-wider bg-black/45 text-white px-2.5 py-0.5 rounded border border-white/20">
-                              {container.code}
-                            </span>
-                            <span className="font-mono text-[10px] font-bold uppercase tracking-widest bg-black/30 text-white px-2 py-0.5 rounded">
-                              {container.isoType}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Center Brand Stencil & Hazard Diamond */}
-                        <div className="relative z-10 flex items-end justify-between px-2 pb-1">
-                          <div>
-                            <div className="text-[9px] font-mono uppercase tracking-[0.24em] opacity-80 font-bold">
-                              APEX GLOBAL LINE
-                            </div>
-                            <div className="text-sm sm:text-base font-black tracking-tight uppercase leading-none mt-0.5">
-                              {container.mode}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-1.5">
-                            {/* Warning Diamond Decal */}
-                            <div className="w-3.5 h-3.5 rotate-45 bg-amber-400 border border-black flex items-center justify-center">
-                              <div className="w-1 h-1 bg-black rounded-full" />
-                            </div>
-                            <span className="font-mono text-[9px] font-bold bg-black/40 text-white px-2 py-0.5 rounded">
-                              CSC SAFE
-                            </span>
-                          </div>
-                        </div>
+                    {/* ── E. STACKED AIR CARGO CRATES & LD3 DOLLY SITTING ON GROUND WAITING TO BE LIFTED ── */}
+                    <div
+                      style={{
+                        transform: "translate3d(172px, 68px, 16px)",
+                        transformStyle: "preserve-3d",
+                      }}
+                      className="absolute flex flex-col items-center select-none"
+                    >
+                      {/* "NEXT LOAD" Staging Status Pill */}
+                      <div className="mb-1.5 px-2 py-0.5 rounded bg-navy-950/90 text-white border border-sky-400/40 font-mono text-[7.5px] font-bold tracking-wider uppercase shadow-md whitespace-nowrap flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                        STAGED ON TARMAC · NEXT LIFT
                       </div>
 
-                      {/* 2. BACK LONG SIDE WALL (292 x 82, at Z = -52px) */}
-                      <div
-                        style={{
-                          width: `${BOX_W}px`,
-                          height: `${BOX_H}px`,
-                          background: container.doorEndBg,
-                          transform: `rotateY(180deg) translateZ(${BOX_D / 2}px)`,
-                        }}
-                        className="absolute inset-0 border border-slate-500/40"
-                      />
-
-                      {/* 3. TOP ROOF FACE (292 x 104, centered at Y = -41px) */}
-                      <div
-                        style={{
-                          width: `${BOX_W}px`,
-                          height: `${BOX_D}px`,
-                          top: `${(BOX_H - BOX_D) / 2}px`,
-                          left: 0,
-                          background: container.roofBg,
-                          transform: `rotateX(90deg) translateZ(${BOX_H / 2}px)`,
-                          color: container.textColor,
-                        }}
-                        className="absolute border border-slate-400/50 overflow-hidden flex items-center justify-between px-5"
+                      {/* Top Stacked Priority Pharma / Cargo Crate (Sitting on top of lower ULD) */}
+                      <motion.div
+                        animate={{ y: [0, -2, 0] }}
+                        transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                        className="relative z-10 w-24 h-11 rounded-t-xs bg-gradient-to-b from-[#E6CBA8] via-[#D4B083] to-[#B88B58] border-2 border-slate-700 shadow-md p-1 flex flex-col justify-between overflow-hidden"
                       >
+                        {/* Crisscross Netting on Top Crate */}
                         <div
-                          className="absolute inset-x-3 inset-y-1 pointer-events-none"
+                          className="absolute inset-0 pointer-events-none opacity-80"
                           style={{
-                            backgroundImage: `repeating-linear-gradient(90deg, ${container.ribShadow} 0px, ${container.ribShadow} 6px, rgba(255,255,255,0.2) 6px, rgba(255,255,255,0.2) 11px, transparent 11px, transparent 16px)`,
+                            backgroundImage:
+                              "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.75) 6px, rgba(255,255,255,0.75) 7.5px), repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,0.75) 6px, rgba(255,255,255,0.75) 7.5px)",
                           }}
                         />
-                        <span className="relative z-10 font-mono text-[10px] font-black tracking-widest opacity-85">
-                          APEX GLOBAL
-                        </span>
-                        <span className="relative z-10 font-mono text-[10px] font-bold opacity-80">
-                          {container.code}
-                        </span>
-                      </div>
-
-                      {/* 4. BOTTOM FLOOR FACE (292 x 104, centered at Y = +41px) */}
-                      <div
-                        style={{
-                          width: `${BOX_W}px`,
-                          height: `${BOX_D}px`,
-                          top: `${(BOX_H - BOX_D) / 2}px`,
-                          left: 0,
-                          background: "#0F172A",
-                          transform: `rotateX(-90deg) translateZ(${BOX_H / 2}px)`,
-                        }}
-                        className="absolute shadow-2xl"
-                      />
-
-                      {/* 5. RIGHT CARGO DOOR END FACE (104 x 82, centered at X = +146px) */}
-                      <div
-                        style={{
-                          width: `${BOX_D}px`,
-                          height: `${BOX_H}px`,
-                          top: 0,
-                          left: `${(BOX_W - BOX_D) / 2}px`,
-                          background: container.doorEndBg,
-                          transform: `rotateY(90deg) translateZ(${BOX_W / 2}px)`,
-                        }}
-                        className="absolute border-2 border-slate-700/60 p-1.5 flex flex-col justify-between overflow-hidden"
-                      >
-                        {/* Double Cargo Doors with Rubber Gasket Split & 4 Steel Cam-Lock Bars */}
-                        <div className="relative w-full h-full border border-black/40 grid grid-cols-2 gap-0.5 bg-black/15 p-1">
-                          {/* Left Door Leaf */}
-                          <div className="relative border border-white/15 flex justify-around items-center px-1">
-                            <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
-                            <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
-                            {/* Door Latch Handles */}
-                            <div className="absolute top-1/2 inset-x-1 h-1 bg-amber-400 rounded-xs" />
-                          </div>
-                          {/* Right Door Leaf */}
-                          <div className="relative border border-white/15 flex justify-around items-center px-1">
-                            <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
-                            <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
-                            <div className="absolute top-1/2 inset-x-1 h-1 bg-amber-400 rounded-xs" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* 6. LEFT FRONT END WALL / REEFER UNIT FACE (104 x 82, centered at X = -146px) */}
-                      <div
-                        style={{
-                          width: `${BOX_D}px`,
-                          height: `${BOX_H}px`,
-                          top: 0,
-                          left: `${(BOX_W - BOX_D) / 2}px`,
-                          background: container.doorEndBg,
-                          transform: `rotateY(-90deg) translateZ(${BOX_W / 2}px)`,
-                        }}
-                        className="absolute border border-slate-600/50 p-2 flex flex-col items-center justify-center"
-                      >
-                        <div className="w-full h-full border border-white/20 rounded-xs bg-black/20 flex items-center justify-center">
-                          <span className="font-mono text-[8px] text-white/80 font-bold">
-                            ISO END
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="font-mono text-[6.5px] font-black bg-navy-950 text-white px-1 rounded">
+                            AWB-8841
+                          </span>
+                          <span className="font-mono text-[6px] font-black bg-primary-500 text-white px-1 rounded">
+                            URGENT
                           </span>
                         </div>
+                        <div className="relative z-10 text-[6.5px] font-mono font-black text-navy-950 bg-white/80 px-1 rounded truncate">
+                          BOX #02 · 840 KG
+                        </div>
+                      </motion.div>
+
+                      {/* Bottom Stacked LD3 Aluminum Air Container / Heavy Pallet Base */}
+                      <div className="relative w-28 h-13 bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 border-2 border-slate-600 shadow-xl p-1.5 flex flex-col justify-between overflow-hidden">
+                        {/* Vertical Yellow Strap */}
+                        <div className="absolute inset-y-0 left-1/3 w-1 bg-amber-400" />
+                        <div className="absolute inset-y-0 right-1/3 w-1 bg-amber-400" />
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="font-mono text-[7px] font-black text-navy-950 bg-white/90 px-1 rounded border border-slate-400">
+                            LD3 · ENXU
+                          </span>
+                          <span className="font-mono text-[6.5px] font-bold text-emerald-800 bg-emerald-100 px-1 rounded">
+                            CLEARED
+                          </span>
+                        </div>
+                        <div className="relative z-10 flex items-center justify-between text-[6.5px] font-mono font-bold text-slate-800">
+                          <span>1,420 KG</span>
+                          <span>IST→FRA</span>
+                        </div>
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+
+                      {/* Ground Airport Tarmac Dolly Trailer & Tow Bar under the Stacked Cargo */}
+                      <div className="relative w-32 h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 border border-slate-900 rounded-xs shadow-md flex items-center justify-around px-1">
+                        {[0, 1, 2, 3, 4].map((r) => (
+                          <span key={r} className="w-1.5 h-1 rounded-full bg-amber-400" />
+                        ))}
+                        {/* Dolly Tarmac Wheels */}
+                        <div className="absolute -bottom-2 left-3 w-3.5 h-3.5 rounded-full bg-slate-900 border border-slate-400" />
+                        <div className="absolute -bottom-2 right-3 w-3.5 h-3.5 rounded-full bg-slate-900 border border-slate-400" />
+                        {/* Orange Tow Bar */}
+                        <div className="absolute -left-5 bottom-0.5 w-5 h-1 bg-primary-500 border border-slate-900 -rotate-6" />
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : (
+                  /* ── 2. SEA MODE: 3D ROTATABLE ISO CARGO CONTAINER STACK ───── */
+                  <motion.div
+                    key="hero-sea-stage"
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    style={{
+                      rotateX,
+                      rotateY,
+                      transformStyle: "preserve-3d",
+                    }}
+                    className="relative flex items-center justify-center scale-[0.82] sm:scale-100 md:scale-105"
+                  >
+                    {INTERACTIVE_CONTAINERS.map((container, idx) => {
+                      const isActive = activeIdx === idx;
+                      const verticalGap = isExploded ? BOX_H + 34 : BOX_H + 5;
+                      const yPos = (idx - 1) * verticalGap;
+                      const zSlide = isActive ? 28 : 0;
+
+                      return (
+                        <motion.div
+                          key={container.id}
+                          onClick={() => setActiveIdx(idx)}
+                          animate={{
+                            y: yPos,
+                            z: zSlide,
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 210,
+                            damping: 22,
+                          }}
+                          style={{
+                            width: `${BOX_W}px`,
+                            height: `${BOX_H}px`,
+                            transformStyle: "preserve-3d",
+                          }}
+                          className="absolute cursor-pointer"
+                        >
+                          {/* 1. FRONT LONG SIDE WALL (368 x 104, at Z = +66px) */}
+                          <div
+                            style={{
+                              width: `${BOX_W}px`,
+                              height: `${BOX_H}px`,
+                              background: container.sideWallBg,
+                              transform: `translateZ(${BOX_D / 2}px)`,
+                              color: container.textColor,
+                            }}
+                            className={`absolute inset-0 border ${
+                              isActive
+                                ? "border-primary-500 ring-2 ring-primary-500/40"
+                                : "border-slate-400/50"
+                            } overflow-hidden flex flex-col justify-between p-3.5 shadow-inner`}
+                          >
+                            {/* Top & Bottom Structural Steel Rails */}
+                            <div className="absolute inset-x-0 top-0 h-2.5 bg-black/15 border-b border-white/20" />
+                            <div className="absolute inset-x-0 bottom-0 h-3 bg-black/25 border-t border-black/20 flex items-center justify-around px-10">
+                              <div className="w-9 h-1.5 bg-black/65 rounded-xs" />
+                              <div className="w-9 h-1.5 bg-black/65 rounded-xs" />
+                            </div>
+
+                            {/* Deep 3D Corrugated Side Panels */}
+                            <div
+                              className="absolute inset-x-3.5 inset-y-2.5 pointer-events-none"
+                              style={{
+                                backgroundImage: `repeating-linear-gradient(90deg, ${container.ribShadow} 0px, ${container.ribShadow} 7px, rgba(255,255,255,0.22) 7px, rgba(255,255,255,0.22) 13px, transparent 13px, transparent 19px)`,
+                              }}
+                            />
+
+                            {/* 4 ISO Corner Castings with Twist-Lock Holes */}
+                            {[
+                              "top-0 left-0",
+                              "top-0 right-0",
+                              "bottom-0 left-0",
+                              "bottom-0 right-0",
+                            ].map((pos) => (
+                              <div
+                                key={pos}
+                                className={`absolute ${pos} w-4 h-4 bg-slate-800 border border-slate-400 flex items-center justify-center z-20`}
+                              >
+                                <div className="w-1.5 h-1 rounded-full bg-black" />
+                              </div>
+                            ))}
+
+                            {/* Reefer Cooling Machinery Grille */}
+                            {container.isReefer && (
+                              <div className="relative z-10 flex items-center justify-between pl-2 pr-1">
+                                <div className="flex items-center gap-1.5 bg-sky-950 text-white px-2.5 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-400/40">
+                                  <ThermometerSnowflake className="w-3 h-3 text-sky-400" />
+                                  THERMO-KING +2.4°C
+                                </div>
+                                <span className="font-mono text-xs font-black tracking-wider bg-slate-900 text-white px-2.5 py-0.5 rounded">
+                                  {container.code}
+                                </span>
+                              </div>
+                            )}
+
+                            {!container.isReefer && (
+                              <div className="relative z-10 flex items-center justify-between px-2">
+                                <span className="font-mono text-xs font-black tracking-wider bg-black/45 text-white px-2.5 py-0.5 rounded border border-white/20">
+                                  {container.code}
+                                </span>
+                                <span className="font-mono text-[10px] font-bold uppercase tracking-widest bg-black/30 text-white px-2 py-0.5 rounded">
+                                  {container.isoType}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Center Brand Stencil & Hazard Diamond */}
+                            <div className="relative z-10 flex items-end justify-between px-2 pb-1">
+                              <div>
+                                <div className="text-[9px] font-mono uppercase tracking-[0.24em] opacity-80 font-bold">
+                                  EURONEXT GLOBAL
+                                </div>
+                                <div className="text-sm sm:text-base font-black tracking-tight uppercase leading-none mt-0.5">
+                                  {container.mode}
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-1.5">
+                                <div className="w-3.5 h-3.5 rotate-45 bg-amber-400 border border-black flex items-center justify-center">
+                                  <div className="w-1 h-1 bg-black rounded-full" />
+                                </div>
+                                <span className="font-mono text-[9px] font-bold bg-black/40 text-white px-2 py-0.5 rounded">
+                                  CSC SAFE
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 2. BACK LONG SIDE WALL */}
+                          <div
+                            style={{
+                              width: `${BOX_W}px`,
+                              height: `${BOX_H}px`,
+                              background: container.doorEndBg,
+                              transform: `rotateY(180deg) translateZ(${BOX_D / 2}px)`,
+                            }}
+                            className="absolute inset-0 border border-slate-500/40"
+                          />
+
+                          {/* 3. TOP ROOF FACE */}
+                          <div
+                            style={{
+                              width: `${BOX_W}px`,
+                              height: `${BOX_D}px`,
+                              top: `${(BOX_H - BOX_D) / 2}px`,
+                              left: 0,
+                              background: container.roofBg,
+                              transform: `rotateX(90deg) translateZ(${BOX_H / 2}px)`,
+                              color: container.textColor,
+                            }}
+                            className="absolute border border-slate-400/50 overflow-hidden flex items-center justify-between px-5"
+                          >
+                            <div
+                              className="absolute inset-x-3 inset-y-1 pointer-events-none"
+                              style={{
+                                backgroundImage: `repeating-linear-gradient(90deg, ${container.ribShadow} 0px, ${container.ribShadow} 6px, rgba(255,255,255,0.2) 6px, rgba(255,255,255,0.2) 11px, transparent 11px, transparent 16px)`,
+                              }}
+                            />
+                            <span className="relative z-10 font-mono text-[10px] font-black tracking-widest opacity-85">
+                              EURONEXT GLOBAL
+                            </span>
+                            <span className="relative z-10 font-mono text-[10px] font-bold opacity-80">
+                              {container.code}
+                            </span>
+                          </div>
+
+                          {/* 4. BOTTOM FLOOR FACE */}
+                          <div
+                            style={{
+                              width: `${BOX_W}px`,
+                              height: `${BOX_D}px`,
+                              top: `${(BOX_H - BOX_D) / 2}px`,
+                              left: 0,
+                              background: "#0F172A",
+                              transform: `rotateX(-90deg) translateZ(${BOX_H / 2}px)`,
+                            }}
+                            className="absolute shadow-2xl"
+                          />
+
+                          {/* 5. RIGHT CARGO DOOR END FACE */}
+                          <div
+                            style={{
+                              width: `${BOX_D}px`,
+                              height: `${BOX_H}px`,
+                              top: 0,
+                              left: `${(BOX_W - BOX_D) / 2}px`,
+                              background: container.doorEndBg,
+                              transform: `rotateY(90deg) translateZ(${BOX_W / 2}px)`,
+                            }}
+                            className="absolute border-2 border-slate-700/60 p-1.5 flex flex-col justify-between overflow-hidden"
+                          >
+                            <div className="relative w-full h-full border border-black/40 grid grid-cols-2 gap-0.5 bg-black/15 p-1">
+                              <div className="relative border border-white/15 flex justify-around items-center px-1">
+                                <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
+                                <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
+                                <div className="absolute top-1/2 inset-x-1 h-1 bg-amber-400 rounded-xs" />
+                              </div>
+                              <div className="relative border border-white/15 flex justify-around items-center px-1">
+                                <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
+                                <div className="w-1 h-full bg-gradient-to-r from-slate-300 via-white to-slate-400 shadow-xs" />
+                                <div className="absolute top-1/2 inset-x-1 h-1 bg-amber-400 rounded-xs" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 6. LEFT FRONT END WALL */}
+                          <div
+                            style={{
+                              width: `${BOX_D}px`,
+                              height: `${BOX_H}px`,
+                              top: 0,
+                              left: `${(BOX_W - BOX_D) / 2}px`,
+                              background: container.doorEndBg,
+                              transform: `rotateY(-90deg) translateZ(${BOX_W / 2}px)`,
+                            }}
+                            className="absolute border border-slate-600/50 p-2 flex flex-col items-center justify-center"
+                          >
+                            <div className="w-full h-full border border-white/20 rounded-xs bg-black/20 flex items-center justify-center">
+                              <span className="font-mono text-[8px] text-white/80 font-bold">
+                                ISO END
+                              </span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Live Selected Container Telemetry HUD Card */}
+            {/* Live Selected Unit Telemetry HUD Card (Adapts to Air or Sea Mode) */}
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeContainer.id}
+                key={`${heroMode}-${activeIdx}`}
                 initial={{ opacity: 0, y: 10, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -692,17 +1622,21 @@ export function Hero() {
               >
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
                   <div className="flex items-center gap-2">
-                    <Box className="w-4 h-4 text-primary-500" />
+                    {heroMode === "air" ? (
+                      <Plane className="w-4 h-4 text-sky-600" />
+                    ) : (
+                      <Box className="w-4 h-4 text-primary-500" />
+                    )}
                     <span className="font-mono text-xs font-black text-navy-950">
-                      {activeContainer.code}
+                      {heroMode === "air" ? activeAirUnit.awbCode : activeContainer.code}
                     </span>
                     <span className="text-[10px] font-mono text-slate-400">
-                      ({activeContainer.weight})
+                      ({heroMode === "air" ? activeAirUnit.weight : activeContainer.weight})
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
                     <Activity className="w-3 h-3 text-emerald-600" />
-                    {activeContainer.status}
+                    {heroMode === "air" ? activeAirUnit.status : activeContainer.status}
                   </span>
                 </div>
 
@@ -712,7 +1646,7 @@ export function Hero() {
                       Commodity Class
                     </span>
                     <span className="font-bold text-navy-950 mt-0.5 block">
-                      {activeContainer.cargo}
+                      {heroMode === "air" ? activeAirUnit.cargo : activeContainer.cargo}
                     </span>
                   </div>
                   <div>
@@ -720,7 +1654,7 @@ export function Hero() {
                       Active Corridor
                     </span>
                     <span className="font-bold text-primary-600 mt-0.5 block">
-                      {activeContainer.route}
+                      {heroMode === "air" ? activeAirUnit.route : activeContainer.route}
                     </span>
                   </div>
                 </div>
@@ -728,11 +1662,14 @@ export function Hero() {
                 <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-600">
                   <span className="flex items-center gap-1.5">
                     <ThermometerSnowflake className="w-3.5 h-3.5 text-teal-600" />
-                    Telemetry: <strong className="text-navy-900">{activeContainer.temp}</strong>
+                    Telemetry:{" "}
+                    <strong className="text-navy-900">
+                      {heroMode === "air" ? activeAirUnit.temp : activeContainer.temp}
+                    </strong>
                   </span>
                   <span className="flex items-center gap-1 text-emerald-700 font-bold">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                    Customs Pre-Cleared
+                    {heroMode === "air" ? "Airport Customs Pre-Cleared" : "Seaport Customs Pre-Cleared"}
                   </span>
                 </div>
               </motion.div>

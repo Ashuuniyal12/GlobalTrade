@@ -7,7 +7,7 @@ export function generateOrganizationSchema() {
     name: siteConfig.name,
     alternateName: siteConfig.shortName,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/images/logo.png`,
+    logo: `${siteConfig.url}/images/logo.svg`,
     description: siteConfig.description,
     email: siteConfig.contact.email,
     telephone: siteConfig.contact.phoneDisplay,

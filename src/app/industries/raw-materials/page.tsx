@@ -87,7 +87,7 @@ export default function RawMaterialsPage() {
                 Industrial commodities and raw materials require precise coordination between mine or plant production schedules, port storage silos, and carrier loading deadlines. Demurrage costs for bulk vessels or container detentions can rapidly erode transactional profitability.
               </p>
               <p className="mt-3">
-                Apex Global Trade works alongside producers, traders, and international end-users. We oversee pre-loading weight surveys, coordinate fumigation/phytosanitary certificates, and handle commercial invoicing alignment under Incoterms 2020 rules (FOB, CFR, CIF).
+                Euronext Global works alongside producers, traders, and international end-users. We oversee pre-loading weight surveys, coordinate fumigation/phytosanitary certificates, and handle commercial invoicing alignment under Incoterms 2020 rules (EXW, FCA, FOB, CFR, CIF).
               </p>
             </div>
 

@@ -8,7 +8,7 @@ import { formatWhatsAppUrl } from "@/lib/utils";
 export default function NotFound() {
   const whatsappUrl = formatWhatsAppUrl(
     siteConfig.contact.whatsappNumber,
-    "Hello Apex Global Trade desk, I encountered a 404 page and need assistance."
+    "Hello Euronext Global desk, I encountered a 404 page and need assistance."
   );
 
   return (

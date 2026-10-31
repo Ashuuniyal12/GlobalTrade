@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "Global Markets & Trade Corridors | Confirmed Sea & Air Routes",
   description:
-    "Explore confirmed international shipping lanes and maritime corridors serviced by Apex Global Trade across the Middle East, Europe, Asia, and the Americas.",
+    "Explore confirmed international air cargo hubs and maritime shipping corridors serviced by Euronext Global across Istanbul, Europe, the Middle East, Asia, and the Americas.",
   path: "/global-markets",
   keywords: [
     "global trade corridors",
@@ -127,7 +127,7 @@ export default function GlobalMarketsPage() {
             <strong className="text-navy-900 block mb-1">
               Geographic Scope & Route Transparency:
             </strong>
-            Apex Global Trade does not claim to operate universal service to every sovereign territory. Trade execution is subject to international maritime sanctions, sovereign export restrictions, carrier equipment positioning, and reciprocal bilateral trade agreements.
+            Euronext Global does not claim to operate universal service to every sovereign territory. Trade execution is subject to international aviation and maritime sanctions, sovereign export restrictions, carrier equipment positioning, and reciprocal bilateral trade agreements.
           </div>
         </div>
       </div>
